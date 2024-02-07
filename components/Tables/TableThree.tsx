@@ -33,9 +33,9 @@ const TableThree = () => {
       <div className="max-w-full overflow-x-auto">
         <table className="w-full table-auto">
           <thead>
-            <tr className="bg-gray-2 text-left dark:bg-meta-4">
+            <tr className="text-left bg-gray-2 dark:bg-meta-4">
               <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                Package
+                Invoice
               </th>
               <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
                 Invoice date
@@ -43,13 +43,14 @@ const TableThree = () => {
               <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
                 Status
               </th>
-              <th className="py-4 px-4 font-medium text-black dark:text-white">
+              <th className="px-4 py-4 font-medium text-black dark:text-white">
                 Actions
               </th>
             </tr>
           </thead>
           <tbody>
-            {packageData.map((packageItem, key) => (
+
+            {/* {packageData.map((packageItem, key) => (
               <tr key={key}>
                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                   <h5 className="font-medium text-black dark:text-white">
@@ -145,9 +146,11 @@ const TableThree = () => {
                   </div>
                 </td>
               </tr>
-            ))}
+            ))} */}
           </tbody>
+
         </table>
+        <div className='w-full py-3 text-center'><b>No Data Found</b></div>
       </div>
     </div>
   );
