@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const TableThree = ({ transactions }: any) => {
   const handleDelete = (id: any) => {
-    axios.delete(`http://localhost:8001/api/invoices/${id}`).then((response) => {
+    axios.delete(`https://backend.huzaccounts.com/api/invoices/${id}`).then((response) => {
       window != undefined && window.location.reload()
     }).catch((error) => {
       console.error('Fetching while fetching transactions', error);
@@ -10,7 +10,7 @@ const TableThree = ({ transactions }: any) => {
   }
 
   const handleDownload = (file_path: string) => {
-    window != undefined && window.open("http://localhost:8001" + file_path, "_blank");
+    window != undefined && window.open("https://backend.huzaccounts.com" + file_path, "_blank");
   }
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
