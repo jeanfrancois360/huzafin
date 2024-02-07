@@ -121,10 +121,10 @@ const Apps = () => {
                 }
             }
             formData.append("logo", selectedFile[0]);
-            axios.post('http://localhost:8000/api/invoices', formData).then((response) => {
+            axios.post('https://backend.huzaccounts.com/api/invoices', formData).then((response) => {
                 console.log({ response })
                 setSuccessMsg(response.data.data.message)
-                window != undefined && window.open("http://localhost:8000" + response.data.data.file_path, "_blank");
+                window != undefined && window.open("https://backend.huzaccounts.com" + response.data.data.file_path, "_blank");
             }).catch((error) => {
                 setErrorMsg(error.response.data.message)
                 console.error('Error generating PDF:', error);
