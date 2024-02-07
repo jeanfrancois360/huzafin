@@ -1,22 +1,32 @@
+"use client"
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import TableOne from "@/components/Tables/TableOne";
 import TableThree from "@/components/Tables/TableThree";
-import TableTwo from "@/components/Tables/TableTwo";
+import axios from 'axios';
 
 import { Metadata } from "next";
-export const metadata: Metadata = {
-  title: "Tables Page | Next.js E-commerce Dashboard Template",
-  description: "This is Tables page for TailAdmin Next.js",
-  // other metadata
-};
+import { useEffect, useState } from 'react';
+
 
 const ViewTransactions = () => {
+  const [transactions, setTransactions] = useState<any | undefined>([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:8001/api/invoices').then((response) => {
+      console.log({ response })
+      setTransactions(response.data.data)
+
+    }).catch((error) => {
+
+      console.error('Fetching while fetching transactions', error);
+    })
+  }, [])
+
   return (
     <>
       <Breadcrumb pageName="Transactions" />
 
       <div className="flex flex-col gap-10">
-        <TableThree />
+        <TableThree transactions={transactions} />
       </div>
     </>
   );
