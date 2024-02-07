@@ -48,7 +48,7 @@ const TableThree = ({ transactions }: any) => {
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <p className="text-black dark:text-white">
-                    {transaction.total}
+                    {transaction.total + " RWF"}
                   </p>
                 </td>
 
