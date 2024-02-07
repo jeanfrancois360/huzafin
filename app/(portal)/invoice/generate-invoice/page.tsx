@@ -507,26 +507,14 @@ const Apps = () => {
                                                         value={values.subtotal = values.items.reduce(
                                                             (accumulator, currentValue) => accumulator + currentValue.amount,
                                                             0,
-                                                        )}
+                                                        ) - ((values.items.reduce(
+                                                            (accumulator, currentValue) => accumulator + currentValue.amount,
+                                                            0,
+                                                        ) * values.discount) / 100)}
                                                         onChange={handleChange('subtotal')}
                                                         onBlur={handleBlur('subtotal')}
                                                         placeholder={`${values.items[0].amount}`}
                                                         disabled
-                                                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                                                    />
-                                                </div>
-                                                <div className="my-2">
-                                                    <label className="block mb-3 text-black dark:text-white">
-                                                        Tax %
-                                                    </label>
-                                                    <input
-                                                        type="number"
-                                                        min={0}
-                                                        name='tax'
-                                                        value={values.tax}
-                                                        onChange={handleChange('tax')}
-                                                        onBlur={handleBlur('tax')}
-                                                        placeholder="0"
                                                         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                                                     />
                                                 </div>
@@ -547,13 +535,28 @@ const Apps = () => {
                                                 </div>
                                                 <div className="my-2">
                                                     <label className="block mb-3 text-black dark:text-white">
+                                                        Tax %
+                                                    </label>
+                                                    <input
+                                                        type="number"
+                                                        min={0}
+                                                        name='tax'
+                                                        value={values.tax}
+                                                        onChange={handleChange('tax')}
+                                                        onBlur={handleBlur('tax')}
+                                                        placeholder="0"
+                                                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                                                    />
+                                                </div>
+                                                <div className="my-2">
+                                                    <label className="block mb-3 text-black dark:text-white">
                                                         Total / RWF
                                                     </label>
                                                     <input
                                                         type="number"
                                                         min={0}
                                                         name='total'
-                                                        value={values.total = values.subtotal - ((values.subtotal * values.tax) / 100) - ((values.subtotal * values.discount) / 100)}
+                                                        value={values.total = values.subtotal + ((values.subtotal * values.tax) / 100)}
                                                         onChange={handleChange('total')}
                                                         onBlur={handleBlur('total')}
                                                         placeholder="0"
