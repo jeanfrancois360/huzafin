@@ -74,7 +74,6 @@ const TableThree = ({ transactions }: any) => {
                       </svg>
                     </button>
                     <button className="hover:text-primary" onClick={() => handleDelete(transaction.id)}>
-
                       <svg
                         className="fill-current"
                         width="18"
@@ -101,18 +100,15 @@ const TableThree = ({ transactions }: any) => {
                         />
                       </svg>
                     </button>
-
                   </div>
                 </td>
               </tr>
             ))}
           </tbody>
-
         </table>
         {transactions && transactions.length <= 0 && (<div className='w-full py-3 text-center'><b>No Data Found</b></div>)}
       </div>
     </div>
   );
 };
-
 export default TableThree;
