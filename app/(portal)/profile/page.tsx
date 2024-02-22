@@ -3,21 +3,20 @@ import Image from "next/image";
 
 import { Metadata } from "next";
 export const metadata: Metadata = {
-  title: "Settings Page | Next.js E-commerce Dashboard Template",
-  description: "This is Settings page for TailAdmin Next.js",
-  // other metadata
+  title: "Profile",
+  description: "User profile",
 };
 
-const Settings = () => {
+const Profile = () => {
   return (
     <>
       <div className="mx-auto max-w-270">
-        <Breadcrumb pageName="Settings" />
+        <Breadcrumb pageName="Profile" />
 
         <div className="grid grid-cols-5 gap-8">
           <div className="col-span-5 xl:col-span-3">
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
+            <div className="bg-white border rounded-sm border-stroke shadow-default dark:border-strokedark dark:bg-boxdark">
+              <div className="py-4 border-b border-stroke px-7 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">
                   Personal Information
                 </h3>
@@ -27,7 +26,7 @@ const Settings = () => {
                   <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                     <div className="w-full sm:w-1/2">
                       <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        className="block mb-3 text-sm font-medium text-black dark:text-white"
                         htmlFor="fullName"
                       >
                         Full Name
@@ -71,7 +70,7 @@ const Settings = () => {
 
                     <div className="w-full sm:w-1/2">
                       <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        className="block mb-3 text-sm font-medium text-black dark:text-white"
                         htmlFor="phoneNumber"
                       >
                         Phone Number
@@ -89,7 +88,7 @@ const Settings = () => {
 
                   <div className="mb-5.5">
                     <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      className="block mb-3 text-sm font-medium text-black dark:text-white"
                       htmlFor="emailAddress"
                     >
                       Email Address
@@ -133,7 +132,7 @@ const Settings = () => {
 
                   <div className="mb-5.5">
                     <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      className="block mb-3 text-sm font-medium text-black dark:text-white"
                       htmlFor="Username"
                     >
                       Username
@@ -150,7 +149,7 @@ const Settings = () => {
 
                   <div className="mb-5.5">
                     <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      className="block mb-3 text-sm font-medium text-black dark:text-white"
                       htmlFor="Username"
                     >
                       BIO
@@ -200,13 +199,13 @@ const Settings = () => {
 
                   <div className="flex justify-end gap-4.5">
                     <button
-                      className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                      className="flex justify-center px-6 py-2 font-medium text-black border rounded border-stroke hover:shadow-1 dark:border-strokedark dark:text-white"
                       type="submit"
                     >
                       Cancel
                     </button>
                     <button
-                      className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-95"
+                      className="flex justify-center px-6 py-2 font-medium rounded bg-primary text-gray hover:bg-opacity-95"
                       type="submit"
                     >
                       Save
@@ -217,16 +216,16 @@ const Settings = () => {
             </div>
           </div>
           <div className="col-span-5 xl:col-span-2">
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
+            <div className="bg-white border rounded-sm border-stroke shadow-default dark:border-strokedark dark:bg-boxdark">
+              <div className="py-4 border-b border-stroke px-7 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">
                   Your Photo
                 </h3>
               </div>
               <div className="p-7">
                 <form action="#">
-                  <div className="mb-4 flex items-center gap-3">
-                    <div className="h-14 w-14 rounded-full">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="rounded-full h-14 w-14">
                       <Image
                         src={"/images/user/user-03.png"}
                         width={55}
@@ -256,10 +255,10 @@ const Settings = () => {
                     <input
                       type="file"
                       accept="image/*"
-                      className="absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none"
+                      className="absolute inset-0 z-50 w-full h-full p-0 m-0 outline-none opacity-0 cursor-pointer"
                     />
                     <div className="flex flex-col items-center justify-center space-y-3">
-                      <span className="flex h-10 w-10 items-center justify-center rounded-full border border-stroke bg-white dark:border-strokedark dark:bg-boxdark">
+                      <span className="flex items-center justify-center w-10 h-10 bg-white border rounded-full border-stroke dark:border-strokedark dark:bg-boxdark">
                         <svg
                           width="16"
                           height="16"
@@ -298,13 +297,13 @@ const Settings = () => {
 
                   <div className="flex justify-end gap-4.5">
                     <button
-                      className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                      className="flex justify-center px-6 py-2 font-medium text-black border rounded border-stroke hover:shadow-1 dark:border-strokedark dark:text-white"
                       type="submit"
                     >
                       Cancel
                     </button>
                     <button
-                      className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-95"
+                      className="flex justify-center px-6 py-2 font-medium rounded bg-primary text-gray hover:bg-opacity-95"
                       type="submit"
                     >
                       Save
@@ -320,4 +319,4 @@ const Settings = () => {
   );
 };
 
-export default Settings;
+export default Profile;
