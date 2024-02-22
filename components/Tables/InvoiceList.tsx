@@ -5,7 +5,7 @@ const InvoiceList = ({ transactions }: any) => {
         axios.delete(`/api/invoices/${id}`).then((response) => {
             window != undefined && window.location.reload()
         }).catch((error) => {
-            console.error('Error while fetching transactions', error);
+            console.error('Error while deleting transaction', error);
         })
     }
     const handleDownload = (file_path: string) => {

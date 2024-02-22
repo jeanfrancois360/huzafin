@@ -13,7 +13,6 @@ const ViewEndpoints = () => {
             <Breadcrumb pageName="Endpoints" />
 
             <div className="flex flex-col gap-10">
-
                 <InvoiceList />
             </div>
         </>
