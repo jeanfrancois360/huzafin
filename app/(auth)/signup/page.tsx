@@ -2,6 +2,12 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import SignUpForm from '@/components/Forms/SignUpForm';
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "SignUp",
+  description: "SignUp to HuzAccounting",
+};
 
 const SignUp = () => {
   return (

@@ -6,8 +6,8 @@ import { Metadata } from "next";
 import 'react-toastify/dist/ReactToastify.css';
 import SignInForm from '@/components/Forms/SignInForm';
 export const metadata: Metadata = {
-  title: "Login",
-  description: "HuzAccounting Login",
+  title: "SignIn",
+  description: "SignIn to HuzAccounting",
 };
 
 const SignIn = () => {
