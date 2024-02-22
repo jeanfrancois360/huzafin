@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Metadata } from "next";
 
 import 'react-toastify/dist/ReactToastify.css';
-import LoginForm from '@/components/Forms/Login';
+import SignInForm from '@/components/Forms/SignInForm';
 export const metadata: Metadata = {
   title: "Login",
   description: "HuzAccounting Login",
@@ -168,7 +168,7 @@ const SignIn = () => {
               <h2 className="text-2xl font-bold text-center text-black mb-9 dark:text-white sm:text-title-xl2">
                 Sign In
               </h2>
-              <LoginForm />
+              <SignInForm />
             </div>
           </div>
         </div>

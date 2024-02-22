@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import RegisterForm from '@/components/Forms/Register';
+import SignUpForm from '@/components/Forms/SignUpForm';
 
 const SignUp = () => {
   return (
@@ -161,7 +161,7 @@ const SignUp = () => {
               <h2 className="text-2xl font-bold text-center text-black mb-9 dark:text-white sm:text-title-xl2">
                 Sign Up
               </h2>
-              <RegisterForm />
+              <SignUpForm />
             </div>
           </div>
         </div>
