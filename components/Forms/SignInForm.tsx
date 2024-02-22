@@ -4,7 +4,7 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { MsgText } from '../MsgText/MsgText'
 import { ILogin } from '@/interfaces'
-import axios from 'axios'
+import axios from '../../axios'
 import { redirect } from 'next/navigation'
 import { toast } from 'react-toastify'
 import * as Yup from 'yup';
@@ -79,11 +79,11 @@ const SignInForm = () => {
 
 
         // Get CSRF token from Laravel Sanctum CSRF cookie
-        const res = await axios.get('https://backend.huzaccounts.com/sanctum/csrf-cookie');
+        const res = await axios.get('/sanctum/csrf-cookie');
 
         console.log({ res })
 
-        return await axios.post('https://backend.huzaccounts.com/api/login', data, {
+        return await axios.post('/api/login', data, {
             headers: {
                 'X-XSRF-TOKEN': "",
             },

@@ -1,20 +1,12 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import CheckboxFive from "@/components/Checkboxes/CheckboxFive";
-import CheckboxFour from "@/components/Checkboxes/CheckboxFour";
-import CheckboxOne from "@/components/Checkboxes/CheckboxOne";
-import CheckboxThree from "@/components/Checkboxes/CheckboxThree";
-import CheckboxTwo from "@/components/Checkboxes/CheckboxTwo";
-import SwitcherFour from "@/components/Switchers/SwitcherFour";
-import SwitcherOne from "@/components/Switchers/SwitcherOne";
-import SwitcherThree from "@/components/Switchers/SwitcherThree";
-import SwitcherTwo from "@/components/Switchers/SwitcherTwo";
+
 
 import { Metadata } from "next";
 export const metadata: Metadata = {
-    title: "Form Elements Page | Next.js E-commerce Dashboard Template",
-    description: "This is Form Elements page for TailAdmin Next.js",
-    // other metadata
+    title: "Add endpoints",
+    description: "Add endpoints",
 };
+
 
 const Endpoints = () => {
     return (

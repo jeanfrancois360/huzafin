@@ -33,7 +33,6 @@ const SignIn = () => {
                   height={32}
                 />
               </Link>
-
               <p className="2xl:px-20">
                 Effortlessly Create Invoices in an Instant!
               </p>

@@ -67,7 +67,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           <Image
             width={176}
             height={32}
-            src={"/images/logo/huzafin-logo.svg"}
+            src={"/images/logo/huzafin-logo.png"}
             alt="Logo"
           />
         </Link>
@@ -109,12 +109,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               {/* <!-- Menu Item Dashboard --> */}
               <li>
                 <Link
+                  href="/invoice/generate-invoice"
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[#3C4FE0] dark:hover:bg-[#3C4FE0] ${pathname.includes("generate-invoice") && "bg-[#3C4FE0] dark:bg-[#3C4FE0]"
+                    }`}
+                >
+                  {/* <Link
 
                   href="/invoice/generate-invoice"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname === "/" &&
                     "bg-graydark dark:bg-meta-4"
                     }`}
-                >
+                > */}
                   <svg
                     className="fill-current"
                     width="18"
@@ -149,7 +154,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <Link
                   href="/transactions"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes("transactions") && "bg-graydark dark:bg-meta-4"
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[#3C4FE0] dark:hover:bg-[#3C4FE0] ${pathname.includes("transactions") && "bg-[#3C4FE0] dark:bg-[#3C4FE0]"
                     }`}
                 >
                   <svg

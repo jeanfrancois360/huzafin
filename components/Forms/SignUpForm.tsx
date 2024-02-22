@@ -82,11 +82,11 @@ const SignUpForm = () => {
 
 
         // Get CSRF token from Laravel Sanctum CSRF cookie
-        const res = await axios.get('https://backend.huzaccounts.com/sanctum/csrf-cookie');
+        const res = await axios.get('/sanctum/csrf-cookie');
 
         console.log({ res })
 
-        return await axios.post('https://backend.huzaccounts.com/api/login', data, {
+        return await axios.post('/api/login', data, {
             headers: {
                 'X-XSRF-TOKEN': "",
             },
