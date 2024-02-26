@@ -5,10 +5,11 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { MsgText } from '../MsgText/MsgText'
 import { IRegister } from '@/interfaces'
-import axios from 'axios'
+import axios from '../../axios'
 import { redirect } from 'next/navigation'
 import { toast } from 'react-toastify'
 import * as Yup from 'yup';
+import { InfinitySpin } from 'react-loader-spinner'
 
 const SignUpForm = () => {
     let initialValues: IRegister = {
@@ -81,17 +82,7 @@ const SignUpForm = () => {
         setIsLoading(true);
         setErrorMsg("")
 
-
-        // Get CSRF token from Laravel Sanctum CSRF cookie
-        const res = await axios.get('/sanctum/csrf-cookie');
-
-        console.log({ res })
-
-        return await axios.post('/api/login', data, {
-            headers: {
-                'X-XSRF-TOKEN': "",
-            },
-        }).then((res) => {
+        return await axios.post('/api/register', data).then((res) => {
             setIsLoading(false)
             localStorage.setItem('user', JSON.stringify(res.data.user))
             localStorage.setItem('access_token', JSON.stringify(res.data.access_token))
@@ -258,11 +249,19 @@ const SignUpForm = () => {
                         </div>
 
                         <div className="mb-5">
-                            <input
+                            <button
                                 type="submit"
-                                value="Create account"
-                                className="w-full p-4 text-white transition border rounded-lg cursor-pointer border-primary bg-primary hover:bg-opacity-90"
-                            />
+                                className="flex justify-center w-full text-white transition border rounded-lg cursor-pointer border-primary bg-primary hover:bg-opacity-90"
+                            >
+                                {!isLoading ? (<div className='p-4'>Sign Up</div>) : (
+                                    <div className='ml-[-8%]'>
+                                        <InfinitySpin
+                                            width="110"
+                                            color="#fff"
+                                        />
+                                    </div>
+                                )}
+                            </button>
                         </div>
                         <div className="mt-6 text-center">
                             <p>

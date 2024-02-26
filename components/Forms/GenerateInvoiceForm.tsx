@@ -9,6 +9,7 @@ import { IInvoice } from '@/interfaces'
 import axios from '../../axios'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
+import { InfinitySpin } from 'react-loader-spinner';
 
 const GenerateInvoiceForm = () => {
     let initialValues: IInvoice = {
@@ -33,6 +34,7 @@ const GenerateInvoiceForm = () => {
             amount: 0
         }]
     }
+    const [isLoading, setIsLoading] = useState(false);
     const [successMsg, setSuccessMsg] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
     const [selectedFile, setSelectedFile] = useState("");
@@ -96,6 +98,7 @@ const GenerateInvoiceForm = () => {
 
     const handleInvoice = (payload: any) => {
         try {
+            setIsLoading(true)
             const formData: FormData = new FormData();
             for (const key in payload) {
                 if (key === "items") {
@@ -111,14 +114,17 @@ const GenerateInvoiceForm = () => {
             }
             formData.append("logo", selectedFile[0]);
             axios.post('/api/invoices', formData).then((response) => {
+                setIsLoading(false)
                 console.log({ response })
                 setSuccessMsg(response.data.data.message)
                 window != undefined && window.open(response.data.data.file_path, "_blank");
             }).catch((error) => {
+                setIsLoading(false)
                 setErrorMsg(error.response.data.message)
                 console.error('Error generating PDF:', error);
             })
         } catch (error) {
+            setIsLoading(false)
             console.error("Something went wrong", error);
         }
     }
@@ -577,8 +583,20 @@ const GenerateInvoiceForm = () => {
                                 </div>
 
                             </div>
-                            <button className="flex justify-center w-full p-3 font-medium rounded bg-primary text-gray">
-                                Generate Invoice
+
+
+                            <button
+                                type="submit"
+                                className="flex justify-center w-full font-medium rounded bg-primary text-gray"
+                            >
+                                {!isLoading ? (<div className='p-4'> Generate Invoice</div>) : (
+                                    <div className='ml-[-5%]'>
+                                        <InfinitySpin
+                                            width="110"
+                                            color="#fff"
+                                        />
+                                    </div>
+                                )}
                             </button>
                         </div>
                     </form>)}</Formik>
