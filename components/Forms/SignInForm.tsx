@@ -86,6 +86,10 @@ const SignInForm = () => {
                 localStorage.setItem('user', JSON.stringify(res.data.data.user))
                 redirect('/invoice/generate-invoice')
             }
+            else {
+                console.log("status 1: ", res.data.status)
+                console.log("status 2: ", res.data.data.status)
+            }
 
 
         }).catch((error) => {
