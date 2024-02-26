@@ -12,7 +12,6 @@ const ViewCompanies = () => {
     return (
         <>
             <Breadcrumb pageName="Companies" />
-
             <div className="flex flex-col gap-10">
                 <InvoiceList />
             </div>
