@@ -587,6 +587,7 @@ const GenerateInvoiceForm = () => {
 
                             <button
                                 type="submit"
+                                disabled={isLoading ? true : false}
                                 className="flex justify-center w-full font-medium rounded bg-primary text-gray"
                             >
                                 {!isLoading ? (<div className='p-4'> Generate Invoice</div>) : (
@@ -600,7 +601,6 @@ const GenerateInvoiceForm = () => {
                             </button>
                         </div>
                     </form>)}</Formik>
-
         </>
     )
 }
