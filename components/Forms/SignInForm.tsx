@@ -80,7 +80,7 @@ const SignInForm = () => {
         setErrorMsg("")
         return await axios.post('/api/login', data).then((res) => {
             setIsLoading(false)
-            if (res.data.status == true) {
+            if (res.data.data.token) {
                 localStorage.setItem('access_token', JSON.stringify(res.data.data.token))
                 localStorage.setItem('user', JSON.stringify(res.data.data.user))
                 redirect('/invoice/generate-invoice')
