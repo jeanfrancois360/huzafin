@@ -251,6 +251,7 @@ const SignUpForm = () => {
                         <div className="mb-5">
                             <button
                                 type="submit"
+                                disabled={isLoading ? true : false}
                                 className="flex justify-center w-full text-white transition border rounded-lg cursor-pointer border-primary bg-primary hover:bg-opacity-90"
                             >
                                 {!isLoading ? (<div className='p-4'>Sign Up</div>) : (
