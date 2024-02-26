@@ -7,7 +7,7 @@ import { MsgText } from '../MsgText/MsgText'
 import { ILogin } from '@/interfaces'
 import axios from '../../axios'
 import { redirect, useRouter } from 'next/navigation'
-import { toast } from 'react-toastify'
+import { ToastContainer, toast } from 'react-toastify'
 import * as Yup from 'yup';
 import { Audio, InfinitySpin } from 'react-loader-spinner'
 
@@ -96,6 +96,7 @@ const SignInForm = () => {
     }
     return (
         <>
+            <ToastContainer />
             <Formik
                 enableReinitialize
                 initialValues={initialValues}

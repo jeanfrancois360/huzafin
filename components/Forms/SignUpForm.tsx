@@ -7,7 +7,7 @@ import { MsgText } from '../MsgText/MsgText'
 import { IRegister } from '@/interfaces'
 import axios from '../../axios'
 import { redirect } from 'next/navigation'
-import { toast } from 'react-toastify'
+import { ToastContainer, toast } from 'react-toastify'
 import * as Yup from 'yup';
 import { InfinitySpin } from 'react-loader-spinner'
 
@@ -96,6 +96,7 @@ const SignUpForm = () => {
     }
     return (
         <>
+            <ToastContainer />
             <Formik
                 enableReinitialize
                 initialValues={initialValues}
