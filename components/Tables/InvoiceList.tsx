@@ -2,7 +2,7 @@ import React from 'react'
 import axios from '../../axios';
 const InvoiceList = ({ transactions }: any) => {
     const handleDelete = (id: any) => {
-        axios.delete(`/api/invoices/${id}`).then((response) => {
+        axios.delete(`/api/invoices/${id}`,).then((response) => {
             window != undefined && window.location.reload()
         }).catch((error) => {
             console.error('Error while deleting transaction', error);
