@@ -19,8 +19,7 @@ const ViewTransactions = () => {
       setTransactions(response.data.data)
 
     }).catch((error) => {
-
-      console.error('Fetching while fetching transactions', error);
+      console.error('Error while fetching transactions', error);
     })
   }, [])
 
