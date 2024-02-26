@@ -21,14 +21,14 @@ const SignUp = () => {
                   className="hidden dark:block"
                   src={"/images/logo/logo.svg"}
                   alt="Logo"
-                  width={176}
+                  width={300}
                   height={32}
                 />
                 <Image
                   className="dark:hidden"
-                  src={"/images/logo/huzafin dark-logo.svg"}
+                  src={"/images/logo/huzafin-dark-logo.png"}
                   alt="Logo"
-                  width={176}
+                  width={300}
                   height={32}
                 />
               </Link>
