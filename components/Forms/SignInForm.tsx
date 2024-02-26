@@ -80,21 +80,18 @@ const SignInForm = () => {
         setErrorMsg("")
         return await axios.post('/api/login', data).then((res) => {
             setIsLoading(false)
-            console.log({ res })
-            if (res.data.status == true) {
+            console.log("res1: ", res.data.status)
+            console.log("res1: ", res.data.data.status)
+            console.log("res1: ", res.data.data.token)
+            console.log("res1: ", res.data.data.user)
+            if (res.data.status == 200) {
                 localStorage.setItem('access_token', JSON.stringify(res.data.data.token))
                 localStorage.setItem('user', JSON.stringify(res.data.data.user))
                 redirect('/invoice/generate-invoice')
             }
-            else {
-                console.log("status 1: ", res.data.status)
-                console.log("status 2: ", res.data.data.status)
-            }
-
-
         }).catch((error) => {
             setIsLoading(false);
-            console.error(error.response?.data?.message);
+            console.error("=> " + error.response?.data?.message);
             const errorMessage = error.response?.data?.message;
             setErrorMsg(errorMessage || error.message);
         })
