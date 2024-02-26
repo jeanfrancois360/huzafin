@@ -3,11 +3,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { redirect } from 'next/navigation';
 import { useRouter } from 'next/navigation'
+import Avatar from 'react-avatar';
 
 const DropdownUser = () => {
   const router = useRouter()
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [userDetails, setUserDetails] = useState<any>(null)
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
@@ -46,9 +46,24 @@ const DropdownUser = () => {
 
   }, [])
 
+  const [userDetails, setUserDetails] = useState<any>(() => {
+    try {
+      if (typeof window !== "undefined") {
+        const user = window.localStorage.getItem("user");
+        return user ? JSON.parse(user) : null;
+      }
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  });
+
   const logout = () => {
-    localStorage.removeItem('access_token');
-    router.push('/signin')
+    if (typeof window !== "undefined") {
+      localStorage.removeItem('access_token');
+      router.push('/signin')
+    }
+
   }
 
   return (
@@ -61,17 +76,18 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            {userDetails && userDetails.hasOwnProperty('name') ? userDetails.name : 'anonymous'}
+            {userDetails && userDetails.hasOwnProperty('name') ? userDetails.name : 'Anonymous'}
           </span>
         </span>
 
         <span className="w-12 h-12 rounded-full">
-          <Image
+          <Avatar size="45" round={true} name={userDetails && userDetails.hasOwnProperty('name') ? userDetails.name : 'anonymous'} />
+          {/* <Image
             width={112}
             height={112}
             src={"/images/user/user-1.png"}
             alt="User"
-          />
+          /> */}
         </span>
 
         <svg
