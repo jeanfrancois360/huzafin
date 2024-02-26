@@ -12,23 +12,23 @@ export const metadata: Metadata = {
 const SignIn = () => {
   return (
     <>
-      <div className="bg-white border rounded-sm  border-stroke shadow-default dark:border-strokedark dark:bg-boxdark">
+      <div className="bg-white border rounded-sm border-stroke shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">
             <div className="py-17.5 px-26 text-center">
               <Link className="mb-5.5 inline-block" href="/">
                 <Image
                   className="hidden dark:block"
-                  src={"/images/logo/logo.svg"}
+                  src={"/images/logo/huzafin-dark-logo.png"}
                   alt="Logo"
-                  width={176}
+                  width={300}
                   height={32}
                 />
                 <Image
                   className="dark:hidden"
-                  src={"/images/logo/huzafin dark-logo.svg"}
+                  src={"/images/logo/huzafin-dark-logo.png"}
                   alt="Logo"
-                  width={176}
+                  width={300}
                   height={32}
                 />
               </Link>
