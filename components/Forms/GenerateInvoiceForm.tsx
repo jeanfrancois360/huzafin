@@ -113,7 +113,12 @@ const GenerateInvoiceForm = () => {
                 }
             }
             formData.append("logo", selectedFile[0]);
-            axios.post('/api/invoices', formData).then((response) => {
+            axios.post('/api/invoices', formData, {
+                headers: {
+                    Authorization:
+                        'Bearer ' + JSON.parse(localStorage.getItem('access_token') || ''),
+                },
+            }).then((response) => {
                 setIsLoading(false)
                 console.log({ response })
                 setSuccessMsg(response.data.data.message)
