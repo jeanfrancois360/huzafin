@@ -6,12 +6,13 @@ import React, { useEffect, useState } from 'react'
 import { MsgText } from '../MsgText/MsgText'
 import { ILogin } from '@/interfaces'
 import axios from '../../axios'
-import { redirect } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import { toast } from 'react-toastify'
 import * as Yup from 'yup';
 import { Audio, InfinitySpin } from 'react-loader-spinner'
 
 const SignInForm = () => {
+    const router = useRouter()
     let initialValues: ILogin = {
         email: '',
         password: ''
@@ -83,7 +84,7 @@ const SignInForm = () => {
             if (res.data.data.token) {
                 localStorage.setItem('access_token', JSON.stringify(res.data.data.token))
                 localStorage.setItem('user', JSON.stringify(res.data.data.user))
-                redirect('/invoice/generate-invoice')
+                router.push('/invoice/generate-invoice')
             }
         }).catch((error) => {
             setIsLoading(false);
