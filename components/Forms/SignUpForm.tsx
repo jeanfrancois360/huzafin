@@ -84,17 +84,15 @@ const SignUpForm = () => {
 
         return await axios.post('/api/register', data).then((res) => {
             setIsLoading(false)
-            localStorage.setItem('user', JSON.stringify(res.data.user))
-            localStorage.setItem('access_token', JSON.stringify(res.data.access_token))
-            redirect('/dashboard')
-
+            if (res.data.status == true) {
+                setSuccessMsg("Successfully registered!");
+            }
         }).catch((error) => {
-            setIsLoading(false);
-            console.error(error.response?.data?.message);
-            const errorMessage = error.response?.data?.message;
+            setIsLoading(false)
+            console.error(error.data.message);
+            const errorMessage = error.data.message;
             setErrorMsg(errorMessage || error.message);
         })
-
     }
     return (
         <>

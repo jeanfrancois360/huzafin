@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 const DropdownUser = () => {
   const router = useRouter()
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [userDetails, setUserDetails] = useState<any>(null)
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
@@ -37,8 +38,16 @@ const DropdownUser = () => {
     return () => document.removeEventListener("keydown", keyHandler);
   });
 
+  useEffect(() => {
+    let user = JSON.parse(localStorage.getItem('user') && JSON.parse(localStorage.getItem('user') || ""));
+    if (user) {
+      setUserDetails(user)
+    }
+
+  }, [])
+
   const logout = () => {
-    console.log("Logout...")
+    localStorage.removeItem('access_token');
     router.push('/signin')
   }
 
@@ -52,9 +61,8 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Demo User
+            {userDetails && userDetails.hasOwnProperty('name') ? userDetails.name : 'anonymous'}
           </span>
-          <span className="block text-xs">Admin</span>
         </span>
 
         <span className="w-12 h-12 rounded-full">

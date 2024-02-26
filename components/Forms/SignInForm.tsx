@@ -78,15 +78,14 @@ const SignInForm = () => {
 
         setIsLoading(true);
         setErrorMsg("")
-        return await axios.post('/api/login', data, {
-            headers: {
-                'X-XSRF-TOKEN': "eyJpdiI6IldHcnFKSERlL1N4cGdTWFZwVzErM0E9PSIsInZhbHVlIjoiMGUyQWUzRjhZdzBXWW1aM3BnSCs0Ri8xcHl0c0R6c3dQTFk0cGxUNnBodWFhbmJLWG02UEMwUU9SVE5vSVRQQWxIcnp4UXVleXRaYVpVcG94bWZyVVhLMTFHZG5wNFppZ0FTTStyeWQyalpjR1crQmpNeS9hRXMzaW92YnRjdG8iLCJtYWMiOiJkZTliZTJjMjMxZjg2YzMzZmI2ZmI4YmI4NTBjY2E2OTI0NWFkZWYxNTUyZTczYmFhNjBkYjIyNDY4ODA2NGM2IiwidGFnIjoiIn0%3D",
-            },
-        }).then((res) => {
+        return await axios.post('/api/login', data).then((res) => {
             setIsLoading(false)
-            localStorage.setItem('user', JSON.stringify(res.data.user))
-            localStorage.setItem('access_token', JSON.stringify(res.data.access_token))
-            redirect('/dashboard')
+            if (res.data.status == true) {
+                localStorage.setItem('access_token', JSON.stringify(res.data.data.token))
+                localStorage.setItem('user', JSON.stringify(res.data.data.user))
+                redirect('/invoice/generate-invoice')
+            }
+
 
         }).catch((error) => {
             setIsLoading(false);

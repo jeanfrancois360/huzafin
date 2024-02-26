@@ -7,6 +7,7 @@ import Loader from "@/components/common/Loader";
 
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
+import { redirect } from 'next/navigation';
 
 export default function RootLayout({
   children,
@@ -20,6 +21,12 @@ export default function RootLayout({
   useEffect(() => {
     setTimeout(() => setLoading(false), 1000);
   }, []);
+
+
+  let access_token = localStorage.getItem('access_token') && JSON.parse(localStorage.getItem('access_token') || "");
+  if (!access_token) {
+    redirect("/signin")
+  }
 
   return (
     <html lang="en">
