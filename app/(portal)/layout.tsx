@@ -22,12 +22,25 @@ export default function RootLayout({
     setTimeout(() => setLoading(false), 1000);
   }, []);
 
-
-  let access_token = localStorage.getItem('access_token') && JSON.parse(localStorage.getItem('access_token') || "");
-  if (!access_token) {
-    redirect("/signin")
-  }
-
+  const [token, setToken] = useState<any>(() => {
+    try {
+      if (typeof window !== "undefined") {
+        const access_token = window.localStorage.getItem("access_token");
+        return access_token ? JSON.parse(access_token) : null;
+      }
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  });
+  useEffect(() => {
+    if (!token) {
+      redirect("/signin")
+    }
+    else {
+      console.log("Authenticated...")
+    }
+  }, [token])
   return (
     <html lang="en">
       <body suppressHydrationWarning={true}>
