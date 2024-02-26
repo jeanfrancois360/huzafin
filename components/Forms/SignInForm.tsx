@@ -80,6 +80,7 @@ const SignInForm = () => {
         setErrorMsg("")
         return await axios.post('/api/login', data).then((res) => {
             setIsLoading(false)
+            console.log({ res })
             if (res.data.status == true) {
                 localStorage.setItem('access_token', JSON.stringify(res.data.data.token))
                 localStorage.setItem('user', JSON.stringify(res.data.data.user))
