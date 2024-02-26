@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 const SignIn = () => {
   return (
     <>
-      <div className="bg-white border rounded-sm border-stroke shadow-default dark:border-strokedark dark:bg-boxdark">
+      <div className="bg-white border rounded-sm  border-stroke shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">
             <div className="py-17.5 px-26 text-center">
@@ -160,7 +160,7 @@ const SignIn = () => {
             </div>
           </div>
 
-          <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
+          <div className="w-full h-screen border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
             <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
 
               <h2 className="text-2xl font-bold text-center text-black mb-9 dark:text-white sm:text-title-xl2">
