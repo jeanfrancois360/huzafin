@@ -581,10 +581,7 @@ const GenerateInvoiceForm = () => {
                                         />
                                     </div>)}
                                 </div>
-
                             </div>
-
-
                             <button
                                 type="submit"
                                 disabled={isLoading ? true : false}
