@@ -26,6 +26,7 @@ const ViewTransactions = () => {
   return (
     <>
       <Breadcrumb pageName="Transactions" />
+
       <div className="flex flex-col gap-10">
         <InvoiceList transactions={transactions} />
       </div>

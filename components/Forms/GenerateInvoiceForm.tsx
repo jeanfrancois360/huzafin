@@ -10,6 +10,7 @@ import axios from '../../axios'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { InfinitySpin } from 'react-loader-spinner';
+import { ApiUrl } from '@/constants';
 
 const GenerateInvoiceForm = () => {
     let initialValues: IInvoice = {
@@ -122,7 +123,7 @@ const GenerateInvoiceForm = () => {
                 setIsLoading(false)
                 console.log({ response })
                 setSuccessMsg(response.data.data.message)
-                window != undefined && window.open(response.data.data.file_path, "_blank");
+                window != undefined && window.open(`${ApiUrl}${response.data.data.file_path}`, "_blank");
             }).catch((error) => {
                 setIsLoading(false)
                 setErrorMsg(error.response.data.message)
