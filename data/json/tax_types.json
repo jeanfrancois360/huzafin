@@ -1,0 +1,18 @@
+[
+{
+    "id": "A",
+    "name": "Exempted"
+},
+{
+    "id": "B",
+    "name": "VAT"
+},
+{
+    "id": "C",
+    "name": "Export or rate"
+},
+{
+    "id": "D",
+    "name": "Taxpayers not registered for VAT"
+}
+]

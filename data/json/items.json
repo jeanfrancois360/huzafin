@@ -1,0 +1,102 @@
+[
+    {
+        "name": "Book",
+        "item_classification_code": "RW001",
+        "packaging_unit_code": "CT",
+        "package": "1",
+        "uom": "DZ",
+        "rate": 118000,
+        "tax_type": "B",
+        "tax_rate": 18
+    },
+    {
+        "name": "Laptop",
+        "item_classification_code": "RW002",
+        "packaging_unit_code": "CT",
+        "package": "2",
+        "uom": "BX",
+        "rate": 1500000,
+        "tax_type": "A",
+        "tax_rate": 15
+    },
+    {
+        "name": "Mobile Phone",
+        "item_classification_code": "RW003",
+        "packaging_unit_code": "CT",
+        "package": "3",
+        "uom": "BX",
+        "rate": 800000,
+        "tax_type": "B",
+        "tax_rate": 18
+    },
+    {
+        "name": "Headphone",
+        "item_classification_code": "RW004",
+        "packaging_unit_code": "CT",
+        "package": "1",
+        "uom": "BX",
+        "rate": 120000,
+        "tax_type": "C",
+        "tax_rate": 10
+    },
+    {
+        "name": "Camera",
+        "item_classification_code": "RW005",
+        "packaging_unit_code": "CT",
+        "package": "2",
+        "uom": "BX",
+        "rate": 500000,
+        "tax_type": "B",
+        "tax_rate": 18
+    },
+    {
+        "name": "Projector",
+        "item_classification_code": "RW006",
+        "packaging_unit_code": "CT",
+        "package": "1",
+        "uom": "BX",
+        "rate": 250000,
+        "tax_type": "A",
+        "tax_rate": 15
+    },
+    {
+        "name": "Printer",
+        "item_classification_code": "RW007",
+        "packaging_unit_code": "CT",
+        "package": "2",
+        "uom": "BX",
+        "rate": 300000,
+        "tax_type": "B",
+        "tax_rate": 18
+    },
+    {
+        "name": "USB Drive",
+        "item_classification_code": "RW008",
+        "packaging_unit_code": "CT",
+        "package": "10",
+        "uom": "NO",
+        "rate": 50000,
+        "tax_type": "C",
+        "tax_rate": 10
+    },
+    {
+        "name": "Keyboard",
+        "item_classification_code": "RW009",
+        "packaging_unit_code": "CT",
+        "package": "1",
+        "uom": "BX",
+        "rate": 80000,
+        "tax_type": "B",
+        "tax_rate": 18
+    },
+    {
+        "name": "Monitor",
+        "item_classification_code": "RW010",
+        "packaging_unit_code": "CT",
+        "package": "2",
+        "uom": "BX",
+        "rate": 350000,
+        "tax_type": "A",
+        "tax_rate": 15
+    }
+]

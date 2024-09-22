@@ -1,0 +1,206 @@
+[
+    {
+        "id": "AM",
+        "name": "Ampoule"
+    },
+    {
+        "id": "BA",
+        "name": "Barrel"
+    },
+    {
+        "id": "BC",
+        "name": "Bottlecrate"
+    },
+    {
+        "id": "BE",
+        "name": "Bundle"
+    },
+    {
+        "id": "BF",
+        "name": "Balloon, non-protected"
+    },
+    {
+        "id": "BG",
+        "name": "Bag"
+    },
+    {
+        "id": "BJ",
+        "name": "Bucket"
+    },
+    {
+        "id": "BK",
+        "name": "Basket"
+    },
+    {
+        "id": "BL",
+        "name": "Bale"
+    },
+    {
+        "id": "BQ",
+        "name": "Bottle, protected cylindrical"
+    },
+    {
+        "id": "BR",
+        "name": "Bar"
+    },
+    {
+        "id": "BV",
+        "name": "Bottle, bulbous"
+    },
+    {
+        "id": "CA",
+        "name": "Can"
+    },
+    {
+        "id": "CH",
+        "name": "Chest"
+    },
+    {
+        "id": "CJ",
+        "name": "Coffin"
+    },
+    {
+        "id": "CL",
+        "name": "Coil"
+    },
+    {
+        "id": "CR",
+        "name": "Wooden Box, Wooden Case"
+    },
+    {
+        "id": "CS",
+        "name": "Cassette"
+    },
+    {
+        "id": "CT",
+        "name": "Carton"
+    },
+    {
+        "id": "CTN",
+        "name": "Container"
+    },
+    {
+        "id": "CY",
+        "name": "Cylinder"
+    },
+    {
+        "id": "DR",
+        "name": "Drum"
+    },
+    {
+        "id": "GT",
+        "name": "Extra Countable Item"
+    },
+    {
+        "id": "HH",
+        "name": "Hand Baggage"
+    },
+    {
+        "id": "IZ",
+        "name": "Ingots"
+    },
+    {
+        "id": "JR",
+        "name": "Jar"
+    },
+    {
+        "id": "JU",
+        "name": "Jug"
+    },
+    {
+        "id": "JY",
+        "name": "Jerry CAN Cylindrical"
+    },
+    {
+        "id": "KZ",
+        "name": "Canester"
+    },
+    {
+        "id": "LZ",
+        "name": "Logs, in bundle/bunch/truss"
+    },
+    {
+        "id": "NT",
+        "name": "Net"
+    },
+    {
+        "id": "OU",
+        "name": "Non-Exterior Packaging Unit"
+    },
+    {
+        "id": "PD",
+        "name": "Poddon"
+    },
+    {
+        "id": "PG",
+        "name": "Plate"
+    },
+    {
+        "id": "PI",
+        "name": "Pipe"
+    },
+    {
+        "id": "PO",
+        "name": "Pilot"
+    },
+    {
+        "id": "PU",
+        "name": "Traypack"
+    },
+    {
+        "id": "RL",
+        "name": "Reel"
+    },
+    {
+        "id": "RO",
+        "name": "Roll"
+    },
+    {
+        "id": "RZ",
+        "name": "Rods, in bundle/bunch/truss"
+    },
+    {
+        "id": "SK",
+        "name": "Skeletoncase"
+    },
+    {
+        "id": "TY",
+        "name": "Tank, cylindrical"
+    },
+    {
+        "id": "VG",
+        "name": "Bulk, gas(at 1031 mbar 15 oC)"
+    },
+    {
+        "id": "VL",
+        "name": "Bulk, liquid(at normal temperature/pressure)"
+    },
+    {
+        "id": "VO",
+        "name": "Bulk, solid, large particles(nodules)"
+    },
+    {
+        "id": "VQ",
+        "name": "Bulk, gas (liquefied at abnormal temperature/pressure)"
+    },
+    {
+        "id": "VR",
+        "name": "Bulk, solid, granular particles(grains)"
+    },
+    {
+        "id": "VT",
+        "name": "Extra Bulk Item"
+    },
+    {
+        "id": "VY",
+        "name": "Bulk, fine particles(powder)"
+    },
+    {
+        "id": "ML",
+        "name": "Mills"
+    },
+    {
+        "id": "TN",
+        "name": "TAN"
+    }
+]

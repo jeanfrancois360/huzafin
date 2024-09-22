@@ -1,0 +1,18 @@
+[
+{
+    "id": "C",
+    "name": "Copy"
+},
+{
+    "id": "N",
+    "name": "Normal"
+},
+{
+    "id": "P",
+    "name": "Proforma"
+},
+{
+    "id": "T",
+    "name": "Training"
+}
+]

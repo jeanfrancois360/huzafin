@@ -165,6 +165,22 @@ const SignUp = () => {
             <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
 
               <h2 className="text-2xl font-bold text-center text-black mb-9 dark:text-white sm:text-title-xl2">
+                <div className='flex justify-center my-6 lg:hidden xl:hidden'>
+                  <Image
+                    className="hidden dark:block"
+                    src={"/images/logo/huzafin-dark-logo.png"}
+                    alt="Logo"
+                    width={300}
+                    height={32}
+                  />
+                  <Image
+                    className="dark:hidden"
+                    src={"/images/logo/huzafin-dark-logo.png"}
+                    alt="Logo"
+                    width={300}
+                    height={32}
+                  />
+                </div>
                 Sign Up
               </h2>
               <SignUpForm />
