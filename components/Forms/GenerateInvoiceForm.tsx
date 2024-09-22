@@ -147,14 +147,11 @@ const GenerateInvoiceForm = () => {
     }
 
     const handleInvoice = (payload: any) => {
-        console.log({ payload })
-        return
         try {
             setIsLoading(true)
             const formData: FormData = new FormData();
             for (const key in payload) {
                 if (key === "items") {
-                    // Special handling for the 'items' array
                     payload[key].forEach((item: any, index: number) => {
                         for (const itemKey in item) {
                             formData.append(`${key}[${index}][${itemKey}]`, item[itemKey]);
