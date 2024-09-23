@@ -56,3 +56,12 @@ export interface IInvoice {
   report_number: string;
   items: IItem[];
 }
+
+export interface IProfile {
+  name: string;
+  email: string;
+}
+export interface IPassword {
+  old_password: string;
+  new_password: string;
+}
