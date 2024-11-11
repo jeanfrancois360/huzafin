@@ -22,7 +22,7 @@ export default function RootLayout({
     setTimeout(() => setLoading(false), 1000);
   }, []);
 
-  const [token, setToken] = useState<any>(() => {
+  const [token] = useState<any>(() => {
     try {
       if (typeof window !== "undefined") {
         const access_token = window.localStorage.getItem("access_token");

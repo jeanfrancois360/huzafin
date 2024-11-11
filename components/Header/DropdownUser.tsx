@@ -38,15 +38,7 @@ const DropdownUser = () => {
     return () => document.removeEventListener("keydown", keyHandler);
   });
 
-  useEffect(() => {
-    let user = JSON.parse(localStorage.getItem('user') && JSON.parse(localStorage.getItem('user') || ""));
-    if (user) {
-      setUserDetails(user)
-    }
-
-  }, [])
-
-  const [userDetails, setUserDetails] = useState<any>(() => {
+  const [userDetails] = useState<any>(() => {
     try {
       if (typeof window !== "undefined") {
         const user = window.localStorage.getItem("user");

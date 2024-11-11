@@ -1,0 +1,174 @@
+[
+{
+    "id": "4B",
+    "name": "Pair"
+},
+{
+    "id": "AV",
+    "name": "Cap"
+},
+{
+    "id": "BA",
+    "name": "Barrel"
+},
+{
+    "id": "BE",
+    "name": "bundle"
+},
+{
+        "id": "BG",
+        "name": "bag"
+    },
+    {
+        "id": "BL",
+        "name": "block"
+    },
+    {
+        "id": "BLL",
+        "name": "BLL Barrel"
+    },
+    {
+        "id": "BX",
+        "name": "box"
+    },
+    {
+        "id": "CA",
+        "name": "Can"
+    },
+    {
+        "id": "CEL",
+        "name": "Cell"
+    },
+    {
+        "id": "CMT",
+        "name": "centimetre"
+    },
+    {
+        "id": "CR",
+        "name": "CARAT"
+    },
+    {
+        "id": "DR",
+        "name": "Drum"
+    },
+    {
+        "id": "DZ",
+        "name": "Dozen"
+    },
+    {
+        "id": "GLL",
+        "name": "Gallon"
+    },
+    {
+        "id": "GRM",
+        "name": "Gram"
+    },
+    {
+        "id": "GRO",
+        "name": "Gross"
+    },
+    {
+        "id": "KG",
+        "name": "Kilo-Gramme"
+    },
+    {
+        "id": "KTM",
+        "name": "kilometre"
+    },
+    {
+        "id": "KWT",
+        "name": "kilowatt"
+    },
+    {
+        "id": "L",
+        "name": "Litre"
+    },
+    {
+        "id": "LBR",
+        "name": "pound"
+    },
+    {
+        "id": "LK",
+        "name": "link"
+    },
+    {
+        "id": "LTR",
+        "name": "Litre"
+    },
+    {
+        "id": "M",
+        "name": "Metre"
+    },
+    {
+        "id": "M2",
+        "name": "Square Metre"
+    },
+    {
+        "id": "M3",
+        "name": "Cubic Metre"
+    },
+    {
+        "id": "MGM",
+        "name": "milligram"
+    },
+    {
+        "id": "MTR",
+        "name": "metre"
+    },
+    {
+        "id": "MWT",
+        "name": "megawatt hour (1000 kW.h)"
+    },
+    {
+        "id": "NO",
+        "name": "Number"
+    },
+    {
+        "id": "NX",
+        "name": "part per thousand"
+    },
+    {
+        "id": "PA",
+        "name": "packet"
+    },
+    {
+        "id": "PG",
+        "name": "plate"
+    },
+    {
+        "id": "PR",
+        "name": "pair"
+    },
+    {
+        "id": "RL",
+        "name": "reel"
+    },
+    {
+        "id": "RO",
+        "name": "roll"
+    },
+    {
+        "id": "SET",
+        "name": "set"
+    },
+    {
+        "id": "ST",
+        "name": "sheet"
+    },
+    {
+        "id": "TNE",
+        "name": "tonne (metric ton)"
+    },
+    {
+        "id": "TU",
+        "name": "tube"
+    },
+    {
+        "id": "U",
+        "name": "Pieces/item [Number]"
+    },
+    {
+        "id": "YRD",
+        "name": "yard"
+    }
+]

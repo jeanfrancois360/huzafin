@@ -2,8 +2,8 @@ import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 
 import { Metadata } from "next";
 export const metadata: Metadata = {
-  title: "Alerts Page | Next.js E-commerce Dashboard Template",
-  description: "This is Alerts page for TailAdmin Next.js",
+  title: "HuzAccounts",
+  description: "HuzAccounts",
   // other metadata
 };
 
@@ -12,11 +12,11 @@ const Alerts = () => {
     <>
       <Breadcrumb pageName="Alerts" />
 
-      <div className="rounded-sm border border-stroke bg-white p-4 shadow-default dark:border-strokedark dark:bg-boxdark md:p-6 xl:p-9">
+      <div className="p-4 bg-white border rounded-sm border-stroke shadow-default dark:border-strokedark dark:bg-boxdark md:p-6 xl:p-9">
         <div className="flex flex-col gap-7.5">
           {/* <!-- Alerts Item --> */}
           <div className="flex w-full border-l-6 border-warning bg-warning bg-opacity-[15%] px-7 py-8 shadow-md dark:bg-[#1B1B24] dark:bg-opacity-30 md:p-9">
-            <div className="mr-5 flex h-9 w-9 items-center justify-center rounded-lg bg-warning bg-opacity-30">
+            <div className="flex items-center justify-center mr-5 rounded-lg h-9 w-9 bg-warning bg-opacity-30">
               <svg
                 width="19"
                 height="16"

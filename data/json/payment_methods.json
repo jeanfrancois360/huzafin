@@ -1,0 +1,30 @@
+[
+{
+    "id": "01",
+    "name": "CASH"
+},
+{
+    "id": "02",
+    "name": "CREDIT"
+},
+{
+    "id": "03",
+    "name": "CASH/CREDIT"
+},
+{
+    "id": "04",
+    "name": "BANK CHECK"
+},
+{
+    "id": "05",
+    "name": "DEBIT&CREDIT CARD"
+},
+{
+    "id": "06",
+    "name": "MOBILE MONEY"
+},
+{
+    "id": "07",
+    "name": "OTHER"
+}
+]

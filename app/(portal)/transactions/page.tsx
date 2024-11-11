@@ -9,13 +9,17 @@ const ViewTransactions = () => {
   const [transactions, setTransactions] = useState<any | undefined>([]);
 
   useEffect(() => {
-    axios.get('/api/invoices').then((response) => {
+    axios.get('/api/invoices', {
+      headers: {
+        Authorization:
+          'Bearer ' + JSON.parse(localStorage.getItem('access_token') || ''),
+      },
+    }).then((response) => {
       console.log({ response })
       setTransactions(response.data.data)
 
     }).catch((error) => {
-
-      console.error('Fetching while fetching transactions', error);
+      console.error('Error while fetching transactions', error);
     })
   }, [])
 

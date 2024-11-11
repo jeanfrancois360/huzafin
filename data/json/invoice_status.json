@@ -1,0 +1,26 @@
+[
+{
+    "id": "01",
+    "name": "Wait for Approval"
+},
+{
+    "id": "02",
+    "name": "Approved"
+},
+{
+    "id": "03",
+    "name": "Cancel Requested"
+},
+{
+    "id": "04",
+    "name": "Canceled"
+},
+{
+    "id": "05",
+    "name": "Refunded"
+},
+{
+    "id": "06",
+    "name": "Transferred"
+}
+]
