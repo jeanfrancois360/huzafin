@@ -5,9 +5,9 @@
         "packaging_unit_code": "CT",
         "package": "1",
         "uom": "DZ",
-        "rate": 118000,
+        "rate": 10000,
         "tax_type": "B",
-        "tax_rate": 18
+        "tax_rate": 10
     },
     {
         "name": "Laptop",

@@ -244,13 +244,13 @@ const GenerateInvoiceForm = () => {
                                     </label>
                                     <input
                                         type="text"
-                                        placeholder="Who is this invoice from?"
-                                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                                         name="sender"
                                         value={values.sender || ""}
                                         onChange={handleChange('sender')}
                                         onBlur={handleBlur('sender')}
                                         autoComplete={`${true}`}
+                                        placeholder="Who is this invoice from?"
+                                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                                     />
                                     {touched.sender && errors.sender && (
                                         <MsgText text={errors.sender} textColor="danger" />
@@ -662,7 +662,7 @@ const GenerateInvoiceForm = () => {
                                                             id={`items.${index}.amount`}
                                                             name={`items.${index}.amount`}
                                                             value={
-                                                                values.items[index].amount = ((values.items[index].quantity * values.items[index].rate) - (values.items[index].tax_amount + values.items[index].discount_amount)) || 0
+                                                                values.items[index].amount = ((values.items[index].quantity * values.items[index].rate) + (values.items[index].tax_amount) - (values.items[index].discount_amount)) || 0
                                                             }
                                                             onChange={handleChange(
                                                                 `items.${index}.amount`
