@@ -37,6 +37,7 @@ const GenerateInvoiceForm = () => {
         purchase_code: uuidv4(),
         sender: '',
         recipient: '',
+        recipient_phone_number: '',
         sales_type_code: '',
         receipt_type_code: '',
         payment_type_code: '',
@@ -84,6 +85,7 @@ const GenerateInvoiceForm = () => {
 
 
 
+
     const notify = (msg_type: string) => {
         if (msg_type === 'success')
             toast.success(successMsg, {
@@ -126,6 +128,7 @@ const GenerateInvoiceForm = () => {
         invoice_number: Yup.string().trim().required().label("Invoice Number"),
         sender: Yup.string().trim().required().label("Sender"),
         recipient: Yup.string().trim().required().label("Recipient"),
+        recipient_phone_number: Yup.string().trim().required().label("Recipient phone number"),
         customer_tin: Yup.string().trim().required().label("Recipient TIN"),
         sales_type_code: Yup.string().trim().required().label("Sales Type"),
         receipt_type_code: Yup.string().trim().required().label("Receipt Type"),
@@ -172,7 +175,9 @@ const GenerateInvoiceForm = () => {
                 setIsLoading(false)
                 console.log({ response })
                 setSuccessMsg(response.data.data.message)
-                window != undefined && window.open(`${ApiUrl}${response.data.data.file_path}`, "_blank");
+                let invoicePath = `${ApiUrl}${response.data.data.file_path}`
+                handleSendSMS(invoicePath, payload.recipient_phone_number)
+                window != undefined && window.open(invoicePath, "_blank");
             }).catch((error) => {
                 setIsLoading(false)
                 setErrorMsg(error.response.data.message)
@@ -182,6 +187,38 @@ const GenerateInvoiceForm = () => {
             setIsLoading(false)
             console.error("Something went wrong", error);
         }
+    }
+    const generateUniqueID = () => {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (char) {
+            const random = Math.random() * 16 | 0;
+            const value = char === 'x' ? random : (random & 0x3 | 0x8);
+            return value.toString(16);
+        });
+    }
+
+    const handleSendSMS = (path: string, phone: string) => {
+        let payload = {
+            "msisdn": phone,
+            "message": "Click the link below to view your invoice: " + path,
+            "msgRef": generateUniqueID(),
+            "sender_id": "FDI"
+        }
+        axios.post('/api/sms/send-sms', payload, {
+            headers: {
+                Authorization:
+                    'Bearer ' + JSON.parse(localStorage.getItem('access_token') || ''),
+            },
+        }).then((response) => {
+            setIsLoading(false)
+            console.log({ response })
+            setSuccessMsg(response.data.data.message)
+            window != undefined && window.open(`${ApiUrl}${response.data.data.file_path}`, "_blank");
+
+        }).catch((error) => {
+            setIsLoading(false)
+            setErrorMsg(error.response.data.message)
+            console.error('Error generating PDF:', error);
+        })
     }
     return (
         <>
@@ -294,6 +331,7 @@ const GenerateInvoiceForm = () => {
                                         <MsgText text={errors.recipient} textColor="danger" />
                                     )}
                                 </div>
+
                                 <div className="block">
                                     <label className="block mb-3 text-black dark:text-white">
                                         Due Date
@@ -350,6 +388,54 @@ const GenerateInvoiceForm = () => {
                                     )}
                                 </div>
                             </div>
+                            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                                <div className="block">
+                                    <label className="block mb-3 text-black dark:text-white">
+                                        Recipient Phone Number
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="recipient_phone_number"
+                                        value={values.recipient_phone_number || "+250"}
+                                        onChange={(e) => {
+                                            let value = e.target.value;
+                                            if (!value.startsWith("+250")) {
+                                                value = "+250" + value.replace(/^\+?250?/, "");
+                                            }
+                                            handleChange({ target: { name: 'recipient_phone_number', value } });
+                                        }}
+                                        onBlur={handleBlur('recipient_phone_number')}
+                                        autoComplete="on"
+                                        placeholder="Enter recipient phone number..."
+                                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                                    />
+                                    {touched.recipient_phone_number && errors.recipient_phone_number && (
+                                        <MsgText text={errors.recipient_phone_number} textColor="danger" />
+                                    )}
+
+                                </div>
+                                <div className="block">
+                                    <label className="block mb-3 text-black dark:text-white">
+                                        Receipt Type
+                                    </label>
+                                    <select
+                                        name="receipt_type_code"
+                                        value={values.receipt_type_code || ""}
+                                        onChange={handleChange('receipt_type_code')}
+                                        onBlur={handleBlur('receipt_type_code')}
+                                        autoComplete={`${true}`}
+                                        className="relative z-20 w-full px-5 py-3 transition bg-transparent border rounded outline-none appearance-none border-stroke focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input">
+                                        <option disabled value="">--Select receipt type--</option>
+                                        {receipt_types && receipt_types.map((item, index) => (
+                                            <option key={index} value={item.id}>{item.name}</option>
+                                        ))}
+                                    </select>
+                                    {touched.receipt_type_code && errors.receipt_type_code && (
+                                        <MsgText text={errors.receipt_type_code} textColor="danger" />
+                                    )}
+                                </div>
+                            </div>
+
 
                             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 <div className="block">
@@ -374,24 +460,26 @@ const GenerateInvoiceForm = () => {
                                 </div>
                                 <div className="block">
                                     <label className="block mb-3 text-black dark:text-white">
-                                        Receipt Type
+                                        Invoice Status
                                     </label>
                                     <select
-                                        name="receipt_type_code"
-                                        value={values.receipt_type_code || ""}
-                                        onChange={handleChange('receipt_type_code')}
-                                        onBlur={handleBlur('receipt_type_code')}
+                                        name="invoice_status_code"
+                                        disabled
+                                        value={values.invoice_status_code || ""}
+                                        onChange={handleChange('invoice_status_code')}
+                                        onBlur={handleBlur('invoice_status_code')}
                                         autoComplete={`${true}`}
                                         className="relative z-20 w-full px-5 py-3 transition bg-transparent border rounded outline-none appearance-none border-stroke focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input">
                                         <option disabled value="">--Select receipt type--</option>
-                                        {receipt_types && receipt_types.map((item, index) => (
+                                        {invoice_status && invoice_status.map((item, index) => (
                                             <option key={index} value={item.id}>{item.name}</option>
                                         ))}
                                     </select>
-                                    {touched.receipt_type_code && errors.receipt_type_code && (
-                                        <MsgText text={errors.receipt_type_code} textColor="danger" />
+                                    {touched.invoice_status_code && errors.invoice_status_code && (
+                                        <MsgText text={errors.invoice_status_code} textColor="danger" />
                                     )}
                                 </div>
+
                             </div>
 
                             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -415,27 +503,7 @@ const GenerateInvoiceForm = () => {
                                         <MsgText text={errors.payment_type_code} textColor="danger" />
                                     )}
                                 </div>
-                                <div className="block">
-                                    <label className="block mb-3 text-black dark:text-white">
-                                        Invoice Status
-                                    </label>
-                                    <select
-                                        name="invoice_status_code"
-                                        disabled
-                                        value={values.invoice_status_code || ""}
-                                        onChange={handleChange('invoice_status_code')}
-                                        onBlur={handleBlur('invoice_status_code')}
-                                        autoComplete={`${true}`}
-                                        className="relative z-20 w-full px-5 py-3 transition bg-transparent border rounded outline-none appearance-none border-stroke focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input">
-                                        <option disabled value="">--Select receipt type--</option>
-                                        {invoice_status && invoice_status.map((item, index) => (
-                                            <option key={index} value={item.id}>{item.name}</option>
-                                        ))}
-                                    </select>
-                                    {touched.invoice_status_code && errors.invoice_status_code && (
-                                        <MsgText text={errors.invoice_status_code} textColor="danger" />
-                                    )}
-                                </div>
+
                             </div>
 
                             <hr className='text-[#E2E8F0] dark:text-[#3C4D5F]' />

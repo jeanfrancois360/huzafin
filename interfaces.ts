@@ -34,6 +34,7 @@ export interface IInvoice {
   purchase_code: string;
   sender: string;
   recipient: string;
+  recipient_phone_number?: string;
   sales_type_code: string;
   receipt_type_code: string;
   payment_type_code: string;
