@@ -24,14 +24,14 @@ export interface IItem {
   tax_amount: number;
   discount_rate: number;
   discount_amount: number;
-  external_id: string;
+  external_id: number;
 }
 
 export interface IInvoice {
-  invoice_number: string;
-  original_invoice_number: string;
+  invoice_number: number;
+  original_invoice_number: number;
   customer_tin: string;
-  purchase_code: string;
+  purchase_code: number;
   sender: string;
   recipient: string;
   recipient_phone_number?: string;
@@ -47,6 +47,7 @@ export interface IInvoice {
   subtotal: number;
   total: number;
   taxable_amount: number;
+  tax: number;
   discount: number;
   amount_paid: number;
   balance_due: number;
@@ -54,7 +55,7 @@ export interface IInvoice {
   registrant_name: string;
   modifier_id: string;
   modifier_name: string;
-  report_number: string;
+  report_number: number;
   items: IItem[];
 }
 

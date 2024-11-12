@@ -29,12 +29,16 @@ function generateUniqueID() {
     }
     return uniqueID;
 }
+const getRandomInt = () => {
+    return Math.floor(Math.random() * 1000001);
+}
 const GenerateInvoiceForm = () => {
+
     let initialValues: IInvoice = {
-        invoice_number: uuidv4(),
-        original_invoice_number: uuidv4(),
+        invoice_number: getRandomInt(),
+        original_invoice_number: getRandomInt(),
         customer_tin: '',
-        purchase_code: uuidv4(),
+        purchase_code: getRandomInt(),
         sender: '',
         recipient: '',
         recipient_phone_number: '',
@@ -50,6 +54,7 @@ const GenerateInvoiceForm = () => {
         subtotal: 0,
         total: 0,
         taxable_amount: 0,
+        tax: 0, //hidden
         discount: 0,
         amount_paid: 0,
         balance_due: 0,
@@ -57,7 +62,7 @@ const GenerateInvoiceForm = () => {
         registrant_name: 'TestVSDC',
         modifier_id: '45678',
         modifier_name: 'TestModifier',
-        report_number: uuidv4(),
+        report_number: getRandomInt(),
         items: [{
             name: "", // visible
             item_classification_code: "", // hidden
@@ -73,7 +78,7 @@ const GenerateInvoiceForm = () => {
             tax_amount: 0, // visible
             discount_rate: 0, // visible
             discount_amount: 0, // visible
-            external_id: uuidv4(), // hidden
+            external_id: getRandomInt(), // hidden
         }]
     }
 
@@ -81,7 +86,7 @@ const GenerateInvoiceForm = () => {
     const [successMsg, setSuccessMsg] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
     const [selectedFile, setSelectedFile] = useState("");
-    const [invoiceNumber, setInvoiceNumber] = useState("INV-" + uuidv4())
+    const [invoiceNumber, setInvoiceNumber] = useState(getRandomInt())
 
 
 
@@ -125,7 +130,7 @@ const GenerateInvoiceForm = () => {
     }, [errorMsg])
 
     const FormValidationSchema = Yup.object().shape({
-        invoice_number: Yup.string().trim().required().label("Invoice Number"),
+        invoice_number: Yup.number().required().label("Invoice Number"),
         sender: Yup.string().trim().required().label("Sender"),
         recipient: Yup.string().trim().required().label("Recipient"),
         recipient_phone_number: Yup.string().trim().required().label("Recipient phone number"),
@@ -144,6 +149,8 @@ const GenerateInvoiceForm = () => {
                 (date, schema) => date && schema.min(date, 'Due date must be greater than or equal to Date')
             ),
     })
+
+
 
     const handleFileChange = (e: any) => {
         setSelectedFile(e.target.files)
@@ -261,7 +268,7 @@ const GenerateInvoiceForm = () => {
                                     <input
                                         type="text"
                                         name="invoice_number"
-                                        value={values.invoice_number = invoiceNumber || ""}
+                                        value={values.invoice_number = invoiceNumber || 0}
                                         onChange={handleChange('invoice_number')}
                                         onBlur={handleBlur('invoice_number')}
                                         autoComplete={`${true}`}
@@ -896,9 +903,28 @@ const GenerateInvoiceForm = () => {
                                                 (accumulator, currentValue) => accumulator + currentValue.taxable_amount,
                                                 0,
                                             )) || 0}
-                                            onChange={handleChange('subtotal')}
-                                            onBlur={handleBlur('subtotal')}
-                                            placeholder={`${values.items[0].amount}`}
+                                            onChange={handleChange('taxable_amount')}
+                                            onBlur={handleBlur('taxable_amount')}
+                                            placeholder={`${values.items[0].taxable_amount}`}
+                                            disabled
+                                            className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                                        />
+                                    </div>
+                                    <div className="my-2">
+                                        <label className="block mb-3 text-black dark:text-white">
+                                            Tax Amount / RWF
+                                        </label>
+                                        <input
+                                            type="number"
+                                            min={0}
+                                            name='tax'
+                                            value={values.tax = (values.items.reduce(
+                                                (accumulator, currentValue) => accumulator + currentValue.tax_amount,
+                                                0,
+                                            )) || 0}
+                                            onChange={handleChange('tax')}
+                                            onBlur={handleBlur('tax')}
+                                            placeholder={`${values.items[0].tax_amount}`}
                                             disabled
                                             className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                                         />
