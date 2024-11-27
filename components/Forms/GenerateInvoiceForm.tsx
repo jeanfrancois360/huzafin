@@ -121,7 +121,9 @@ const GenerateInvoiceForm = () => {
         invoice_number: Yup.number().required().label("Invoice Number"),
         sender: Yup.string().trim().required().label("Sender"),
         recipient: Yup.string().trim().required().label("Recipient"),
-        recipient_phone_number: Yup.string().trim().required().label("Recipient phone number"),
+        recipient_phone_number: Yup.string()
+            .matches(/^\+250\d{9}$/, 'Phone number must start with +250 and have 12 digits')
+            .required('Recipient phone number is required'),
         customer_tin: Yup.string().trim().required().label("Recipient TIN"),
         sales_type_code: Yup.string().trim().required().label("Sales Type"),
         receipt_type_code: Yup.string().trim().required().label("Receipt Type"),
