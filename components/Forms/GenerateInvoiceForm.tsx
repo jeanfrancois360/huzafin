@@ -219,7 +219,7 @@ const GenerateInvoiceForm = () => {
         <>
             <ToastContainer />
             <Formik
-                enableReinitialize
+                // enableReinitialize
                 initialValues={initialValues}
                 onSubmit={handleInvoice}
                 validationSchema={FormValidationSchema}
@@ -228,7 +228,6 @@ const GenerateInvoiceForm = () => {
                     values,
                     handleChange,
                     handleSubmit,
-                    setFieldValue,
                     touched,
                     handleBlur,
                     errors,
@@ -517,7 +516,7 @@ const GenerateInvoiceForm = () => {
                                                         </label>
                                                         <select
                                                             name={`items.${index}.name`}
-                                                            value={values.items[index].name || ""}
+                                                            value={values.items[index]?.name || ""}
                                                             onChange={handleChange(`items.${index}.name`)}
                                                             onBlur={handleBlur(`items.${index}.name`)}
                                                             autoComplete={`${true}`}
@@ -537,16 +536,15 @@ const GenerateInvoiceForm = () => {
                                                             id={`items.${index}.quantity`}
                                                             name={`items.${index}.quantity`}
                                                             value={
-                                                                values.items[index].quantity
-                                                                || 1}
+                                                                values.items[index]?.quantity
+                                                            }
                                                             onChange={handleChange(
                                                                 `items.${index}.quantity`
                                                             )}
                                                             onBlur={handleBlur(
                                                                 `items.${index}.quantity`
                                                             )}
-                                                            min={0}
-                                                            placeholder="0"
+                                                            min={1}
                                                             className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                                                         />
                                                     </div>
@@ -556,7 +554,7 @@ const GenerateInvoiceForm = () => {
                                                         </label>
                                                         <select
                                                             name={`items.${index}.uom`}
-                                                            value={values.items[index].uom = items.filter((item) => item.name == values.items[index].name)[0]?.uom || ""}
+                                                            value={values.items[index].uom = items.filter((item) => item.name == values.items[index]?.name)[0]?.uom || ""}
                                                             onChange={handleChange(`items.${index}.uom`)}
                                                             onBlur={handleBlur(`items.${index}.uom`)}
                                                             autoComplete={`${true}`}
@@ -576,7 +574,7 @@ const GenerateInvoiceForm = () => {
                                                             min={0}
                                                             id={`items.${index}.rate`}
                                                             name={`items.${index}.rate`}
-                                                            value={values.items[index].rate = items.filter((item) => item.name == values.items[index].name)[0]?.rate || 0}
+                                                            value={values.items[index].rate = items.filter((item) => item.name == values.items[index]?.name)[0]?.rate || 0}
                                                             onChange={handleChange(
                                                                 `items.${index}.rate`
                                                             )}
@@ -595,7 +593,7 @@ const GenerateInvoiceForm = () => {
                                                         </label>
                                                         <select
                                                             name={`items.${index}.tax_type`}
-                                                            value={values.items[index].tax_type = items.filter((item) => item.name == values.items[index].name)[0]?.tax_type || ""}
+                                                            value={values.items[index].tax_type = items.filter((item) => item.name == values.items[index]?.name)[0]?.tax_type || ""}
                                                             onChange={handleChange(`items.${index}.tax_type`)}
                                                             onBlur={handleBlur(`items.${index}.tax_type`)}
                                                             autoComplete={`${true}`}
@@ -616,7 +614,7 @@ const GenerateInvoiceForm = () => {
                                                             id={`items.${index}.tax_rate`}
                                                             name={`items.${index}.tax_rate`}
                                                             value={
-                                                                values.items[index].tax_rate = items.filter((item) => item.name == values.items[index].name)[0]?.tax_rate || 0
+                                                                values.items[index].tax_rate = items.filter((item) => item.name == values.items[index]?.name)[0]?.tax_rate || 0
                                                             }
                                                             onChange={handleChange(
                                                                 `items.${index}.tax_rate`
@@ -638,7 +636,7 @@ const GenerateInvoiceForm = () => {
                                                             id={`items.${index}.taxable_amount`}
                                                             name={`items.${index}.taxable_amount`}
                                                             value={
-                                                                values.items[index].taxable_amount = (values.items[index].quantity * values.items[index].rate) || 0
+                                                                values.items[index].taxable_amount = (values.items[index]?.quantity * values.items[index]?.rate) || 0
                                                             }
                                                             onChange={handleChange(
                                                                 `items.${index}.taxable_amount`
@@ -660,7 +658,7 @@ const GenerateInvoiceForm = () => {
                                                             id={`items.${index}.tax_amount`}
                                                             name={`items.${index}.tax_amount`}
                                                             value={
-                                                                values.items[index].tax_amount = (values.items[index].taxable_amount * ((values.items[index].tax_rate) / 100)) || 0
+                                                                values.items[index].tax_amount = (values.items[index]?.taxable_amount * ((values.items[index]?.tax_rate) / 100)) || 0
                                                             }
                                                             onChange={handleChange(
                                                                 `items.${index}.tax_amount`
@@ -682,7 +680,7 @@ const GenerateInvoiceForm = () => {
                                                             id={`items.${index}.discount_rate`}
                                                             name={`items.${index}.discount_rate`}
                                                             value={
-                                                                values.items[index].discount_rate || 0
+                                                                values.items[index]?.discount_rate
                                                             }
                                                             onChange={handleChange(
                                                                 `items.${index}.discount_rate`
@@ -690,7 +688,6 @@ const GenerateInvoiceForm = () => {
                                                             onBlur={handleBlur(
                                                                 `items.${index}.discount_rate`
                                                             )}
-                                                            placeholder="0"
                                                             className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                                                         />
                                                     </div>
@@ -703,7 +700,7 @@ const GenerateInvoiceForm = () => {
                                                             id={`items.${index}.discount_amount`}
                                                             name={`items.${index}.discount_amount`}
                                                             value={
-                                                                values.items[index].discount_amount = (values.items[index].taxable_amount * ((values.items[index].discount_rate) / 100)) || 0
+                                                                values.items[index].discount_amount = (values.items[index]?.taxable_amount * ((values.items[index]?.discount_rate) / 100))
                                                             }
                                                             onChange={handleChange(
                                                                 `items.${index}.discount_amount`
@@ -725,7 +722,7 @@ const GenerateInvoiceForm = () => {
                                                             id={`items.${index}.amount`}
                                                             name={`items.${index}.amount`}
                                                             value={
-                                                                values.items[index].amount = ((values.items[index].quantity * values.items[index].rate) + (values.items[index].tax_amount) - (values.items[index].discount_amount)) || 0
+                                                                values.items[index].amount = ((values.items[index]?.quantity * values.items[index]?.rate) + (values.items[index]?.tax_amount) - (values.items[index]?.discount_amount)) || 0
                                                             }
                                                             onChange={handleChange(
                                                                 `items.${index}.amount`
@@ -739,7 +736,7 @@ const GenerateInvoiceForm = () => {
                                                         />
                                                         <select
                                                             name="packaging_unit_code"
-                                                            value={values.items[index].packaging_unit_code = (items.filter((item) => item.name == values.items[index].name)[0]?.packaging_unit_code) || ""}
+                                                            value={values.items[index].packaging_unit_code = (items.filter((item) => item.name == values.items[index]?.name)[0]?.packaging_unit_code) || ""}
                                                             onChange={handleChange('packaging_unit_code')}
                                                             onBlur={handleBlur('packaging_unit_code')}
                                                             hidden
@@ -756,7 +753,7 @@ const GenerateInvoiceForm = () => {
                                                             name={`items.${index}.package`}
                                                             hidden
                                                             value={
-                                                                values.items[index].package = values.items[index].quantity?.toString() || ""
+                                                                values.items[index].package = values.items[index]?.quantity?.toString() || ""
                                                             }
                                                             onChange={handleChange(
                                                                 `items.${index}.package`
