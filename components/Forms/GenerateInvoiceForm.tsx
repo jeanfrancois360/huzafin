@@ -20,25 +20,13 @@ import receipt_types from '../../data/json/receipt_types.json'
 import tax_types from '../../data/json/tax_types.json'
 import invoice_status from '../../data/json/invoice_status.json'
 import { v4 as uuidv4 } from 'uuid';
-function generateUniqueID() {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let uniqueID = '';
-    for (let i = 0; i < 6; i++) {
-        const randomIndex = Math.floor(Math.random() * characters.length);
-        uniqueID += characters[randomIndex];
-    }
-    return uniqueID;
-}
-const getRandomInt = () => {
-    return Math.floor(Math.random() * 1000001);
-}
 const GenerateInvoiceForm = () => {
 
     let initialValues: IInvoice = {
-        invoice_number: getRandomInt(),
-        original_invoice_number: getRandomInt(),
+        invoice_number: new Date().valueOf(),
+        original_invoice_number: new Date().valueOf(),
         customer_tin: '',
-        purchase_code: getRandomInt(),
+        purchase_code: new Date().valueOf(),
         sender: '',
         recipient: '',
         recipient_phone_number: '',
@@ -62,7 +50,7 @@ const GenerateInvoiceForm = () => {
         registrant_name: 'TestVSDC',
         modifier_id: '45678',
         modifier_name: 'TestModifier',
-        report_number: getRandomInt(),
+        report_number: new Date().valueOf(),
         items: [{
             name: "", // visible
             item_classification_code: "", // hidden
@@ -78,7 +66,7 @@ const GenerateInvoiceForm = () => {
             tax_amount: 0, // visible
             discount_rate: 0, // visible
             discount_amount: 0, // visible
-            external_id: getRandomInt(), // hidden
+            external_id: new Date().valueOf(), // hidden
         }]
     }
 
@@ -86,7 +74,7 @@ const GenerateInvoiceForm = () => {
     const [successMsg, setSuccessMsg] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
     const [selectedFile, setSelectedFile] = useState("");
-    const [invoiceNumber, setInvoiceNumber] = useState(getRandomInt())
+    const [invoiceNumber, setInvoiceNumber] = useState(new Date().valueOf())
 
 
 
@@ -786,7 +774,7 @@ const GenerateInvoiceForm = () => {
                                                             name={`items.${index}.item_classification_code`}
                                                             hidden
                                                             value={
-                                                                values.items[index].item_classification_code = uuidv4() || ""
+                                                                values.items[index].item_classification_code = new Date().valueOf().toString() || ""
                                                             }
                                                             onChange={handleChange(
                                                                 `items.${index}.item_classification_code`
