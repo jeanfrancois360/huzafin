@@ -877,10 +877,7 @@ const GenerateInvoiceForm = () => {
                                             value={values.subtotal = (values.items.reduce(
                                                 (accumulator, currentValue) => accumulator + currentValue.amount,
                                                 0,
-                                            ) - ((values.items.reduce(
-                                                (accumulator, currentValue) => accumulator + currentValue.amount,
-                                                0,
-                                            ) * values.discount) / 100)) || 0}
+                                            )) || 0}
                                             onChange={handleChange('subtotal')}
                                             onBlur={handleBlur('subtotal')}
                                             placeholder={`${values.items[0].amount}`}
@@ -949,7 +946,7 @@ const GenerateInvoiceForm = () => {
                                             type="number"
                                             min={0}
                                             name='total'
-                                            value={values.total = values.subtotal - ((values.discount) / 100)}
+                                            value={values.total = values.subtotal - (((values.discount) / 100) * values.taxable_amount)}
                                             onChange={handleChange('total')}
                                             onBlur={handleBlur('total')}
                                             placeholder="0"
