@@ -182,7 +182,7 @@ const GenerateInvoiceForm = () => {
                 setIsLoading(false)
                 console.log({ response })
                 setSuccessMsg(response.data.data.message)
-                let invoicePath = `${ApiUrl}${response.data.data.file_path}`
+                let invoicePath = `${response.data.data.file_path}`
                 handleSendSMS(invoicePath, payload.recipient_phone_number)
                 window != undefined && window.open(invoicePath, "_blank");
             }).catch((error) => {
