@@ -586,7 +586,7 @@ const GenerateInvoiceForm = () => {
                                                             min={0}
                                                             id={`items.${index}.rate`}
                                                             name={`items.${index}.rate`}
-                                                            value={values.items[index].rate = items.filter((item) => item.name == values.items[index]?.name)[0]?.rate || 0}
+                                                            value={values.items[index].rate = (items.filter((item) => item.name == values.items[index]?.name)[0]?.rate) || 0}
                                                             onChange={handleChange(
                                                                 `items.${index}.rate`
                                                             )}
@@ -648,7 +648,7 @@ const GenerateInvoiceForm = () => {
                                                             id={`items.${index}.taxable_amount`}
                                                             name={`items.${index}.taxable_amount`}
                                                             value={
-                                                                values.items[index].taxable_amount = (values.items[index]?.quantity * values.items[index]?.rate) || 0
+                                                                values.items[index].taxable_amount = parseFloat(((values.items[index]?.quantity * values.items[index]?.rate)).toFixed(2)) || 0
                                                             }
                                                             onChange={handleChange(
                                                                 `items.${index}.taxable_amount`
@@ -670,7 +670,11 @@ const GenerateInvoiceForm = () => {
                                                             id={`items.${index}.tax_amount`}
                                                             name={`items.${index}.tax_amount`}
                                                             value={
-                                                                values.items[index].tax_amount = (values.items[index]?.taxable_amount * values.items[index]?.tax_rate) / (100 + values.items[index]?.tax_rate) || 0
+                                                                values.items[index].tax_amount =
+                                                                parseFloat(
+                                                                    ((values.items[index]?.taxable_amount * values.items[index]?.tax_rate) /
+                                                                        (100 + values.items[index]?.tax_rate) || 0).toFixed(2)
+                                                                )
                                                             }
                                                             onChange={handleChange(
                                                                 `items.${index}.tax_amount`
@@ -713,7 +717,7 @@ const GenerateInvoiceForm = () => {
                                                             id={`items.${index}.discount_amount`}
                                                             name={`items.${index}.discount_amount`}
                                                             value={
-                                                                values.items[index].discount_amount = (values.items[index]?.taxable_amount * ((values.items[index]?.discount_rate) / 100))
+                                                                values.items[index].discount_amount = parseFloat(((values.items[index]?.taxable_amount * ((values.items[index]?.discount_rate) / 100))).toFixed(2))
                                                             }
                                                             onChange={handleChange(
                                                                 `items.${index}.discount_amount`
@@ -736,7 +740,7 @@ const GenerateInvoiceForm = () => {
                                                             id={`items.${index}.amount`}
                                                             name={`items.${index}.amount`}
                                                             value={
-                                                                values.items[index].amount = (values.items[index]?.taxable_amount - values.items[index]?.discount_amount) || values.items[index]?.taxable_amount
+                                                                values.items[index].amount = parseFloat(((values.items[index]?.taxable_amount - values.items[index]?.discount_amount) || values.items[index]?.taxable_amount).toFixed(2))
                                                             }
                                                             onChange={handleChange(
                                                                 `items.${index}.amount`
@@ -818,6 +822,7 @@ const GenerateInvoiceForm = () => {
                                                                         name: "",
 
                                                                         quantity: 1,
+                                                                        discount_rate: 0,
                                                                         rate: 0,
                                                                         amount: 0
                                                                     }
@@ -876,10 +881,10 @@ const GenerateInvoiceForm = () => {
                                             type="number"
                                             min={0}
                                             name='subtotal'
-                                            value={values.subtotal = (values.items.reduce(
+                                            value={values.subtotal = parseFloat(((values.items.reduce(
                                                 (accumulator, currentValue) => accumulator + currentValue.amount,
                                                 0,
-                                            )) || 0}
+                                            ))).toFixed(2)) || 0}
                                             onChange={handleChange('subtotal')}
                                             onBlur={handleBlur('subtotal')}
                                             placeholder={`${values.items[0].amount}`}
@@ -895,10 +900,10 @@ const GenerateInvoiceForm = () => {
                                             type="number"
                                             min={0}
                                             name='taxable_amount'
-                                            value={values.taxable_amount = (values.items.reduce(
+                                            value={values.taxable_amount = parseFloat(((values.items.reduce(
                                                 (accumulator, currentValue) => accumulator + currentValue.taxable_amount,
                                                 0,
-                                            )) || 0}
+                                            ))).toFixed(2)) || 0}
                                             onChange={handleChange('taxable_amount')}
                                             onBlur={handleBlur('taxable_amount')}
                                             placeholder={`${values.items[0].taxable_amount}`}
@@ -914,10 +919,10 @@ const GenerateInvoiceForm = () => {
                                             type="number"
                                             min={0}
                                             name='tax'
-                                            value={values.tax = (values.items.reduce(
+                                            value={values.tax = parseFloat(((values.items.reduce(
                                                 (accumulator, currentValue) => accumulator + currentValue.tax_amount,
                                                 0,
-                                            )) || 0}
+                                            ))).toFixed(2)) || 0}
                                             onChange={handleChange('tax')}
                                             onBlur={handleBlur('tax')}
                                             placeholder={`${values.items[0].tax_amount}`}
@@ -933,10 +938,10 @@ const GenerateInvoiceForm = () => {
                                             type="number"
                                             min={0}
                                             name='discount'
-                                            value={values.discount = (values.items.reduce(
+                                            value={values.discount = parseFloat(((values.items.reduce(
                                                 (accumulator, currentValue) => accumulator + currentValue.discount_amount,
                                                 0,
-                                            )) || 0}
+                                            ))).toFixed(2)) || 0}
                                             disabled
                                             onChange={handleChange('discount')}
                                             onBlur={handleBlur('discount')}
@@ -952,7 +957,7 @@ const GenerateInvoiceForm = () => {
                                             type="number"
                                             min={0}
                                             name='total'
-                                            value={values.total = values.subtotal}
+                                            value={values.total = parseFloat((values.subtotal).toFixed(2))}
                                             onChange={handleChange('total')}
                                             onBlur={handleBlur('total')}
                                             placeholder="0"
