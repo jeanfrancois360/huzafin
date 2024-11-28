@@ -20,6 +20,16 @@ import receipt_types from '../../data/json/receipt_types.json'
 import tax_types from '../../data/json/tax_types.json'
 import invoice_status from '../../data/json/invoice_status.json'
 import { v4 as uuidv4 } from 'uuid';
+
+function generateUniqueId() {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let uniqueId = '';
+    for (let i = 0; i < 10; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        uniqueId += characters[randomIndex];
+    }
+    return uniqueId;
+}
 const GenerateInvoiceForm = () => {
 
     let initialValues: IInvoice = {
@@ -660,7 +670,7 @@ const GenerateInvoiceForm = () => {
                                                             id={`items.${index}.tax_amount`}
                                                             name={`items.${index}.tax_amount`}
                                                             value={
-                                                                values.items[index].tax_amount = (values.items[index]?.taxable_amount * ((values.items[index]?.tax_rate) / 100)) || 0
+                                                                values.items[index].tax_amount = (values.items[index]?.taxable_amount * values.items[index]?.tax_rate) / (100 + values.items[index]?.tax_rate) || 0
                                                             }
                                                             onChange={handleChange(
                                                                 `items.${index}.tax_amount`
@@ -724,7 +734,7 @@ const GenerateInvoiceForm = () => {
                                                             id={`items.${index}.amount`}
                                                             name={`items.${index}.amount`}
                                                             value={
-                                                                values.items[index].amount = ((values.items[index]?.quantity * values.items[index]?.rate) + (values.items[index]?.tax_amount) - (values.items[index]?.discount_amount)) || 0
+                                                                values.items[index].amount = ((values.items[index]?.quantity * values.items[index]?.rate) - (values.items[index]?.discount_amount)) || 0
                                                             }
                                                             onChange={handleChange(
                                                                 `items.${index}.amount`
@@ -773,7 +783,7 @@ const GenerateInvoiceForm = () => {
                                                             name={`items.${index}.item_classification_code`}
                                                             hidden
                                                             value={
-                                                                values.items[index].item_classification_code = new Date().valueOf().toString() || ""
+                                                                values.items[index].item_classification_code = generateUniqueId() || ""
                                                             }
                                                             onChange={handleChange(
                                                                 `items.${index}.item_classification_code`
