@@ -734,7 +734,7 @@ const GenerateInvoiceForm = () => {
                                                             id={`items.${index}.amount`}
                                                             name={`items.${index}.amount`}
                                                             value={
-                                                                values.items[index].amount = ((values.items[index]?.quantity * values.items[index]?.rate) - (values.items[index]?.discount_amount)) || 0
+                                                                values.items[index].amount = (values.items[index]?.taxable_amount - values.items[index]?.discount_amount) || values.items[index]?.taxable_amount
                                                             }
                                                             onChange={handleChange(
                                                                 `items.${index}.amount`
@@ -925,13 +925,17 @@ const GenerateInvoiceForm = () => {
                                     </div>
                                     <div className="my-2">
                                         <label className="block mb-3 text-black dark:text-white">
-                                            Discount %
+                                            Discount Amount
                                         </label>
                                         <input
                                             type="number"
                                             min={0}
                                             name='discount'
-                                            value={values.discount}
+                                            value={values.discount = (values.items.reduce(
+                                                (accumulator, currentValue) => accumulator + currentValue.discount_amount,
+                                                0,
+                                            )) || 0}
+                                            disabled
                                             onChange={handleChange('discount')}
                                             onBlur={handleBlur('discount')}
                                             placeholder="0"
@@ -946,7 +950,7 @@ const GenerateInvoiceForm = () => {
                                             type="number"
                                             min={0}
                                             name='total'
-                                            value={values.total = values.subtotal - (((values.discount) / 100) * values.taxable_amount)}
+                                            value={values.total = values.subtotal}
                                             onChange={handleChange('total')}
                                             onBlur={handleBlur('total')}
                                             placeholder="0"
