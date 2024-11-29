@@ -671,10 +671,14 @@ const GenerateInvoiceForm = () => {
                                                             name={`items.${index}.tax_amount`}
                                                             value={
                                                                 values.items[index].tax_amount =
-                                                                parseFloat(
-                                                                    ((values.items[index]?.taxable_amount * values.items[index]?.tax_rate) /
-                                                                        (100 + values.items[index]?.tax_rate) || 0).toFixed(2)
-                                                                )
+                                                                values.items[index]?.tax_rate > 0
+                                                                    ? parseFloat(
+                                                                        (
+                                                                            (values.items[index]?.taxable_amount * values.items[index]?.tax_rate) /
+                                                                            (100 + values.items[index]?.tax_rate)
+                                                                        ).toFixed(2)
+                                                                    )
+                                                                    : 0
                                                             }
                                                             onChange={handleChange(
                                                                 `items.${index}.tax_amount`
