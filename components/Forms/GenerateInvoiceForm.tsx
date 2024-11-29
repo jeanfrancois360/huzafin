@@ -134,7 +134,6 @@ const GenerateInvoiceForm = () => {
         recipient_phone_number: Yup.string()
             .matches(/^\+250\d{9}$/, 'Phone number must start with +250 and have 12 digits')
             .required('Recipient phone number is required'),
-        customer_tin: Yup.string().trim().required().label("Recipient TIN"),
         sales_type_code: Yup.string().trim().required().label("Sales Type"),
         receipt_type_code: Yup.string().trim().required().label("Receipt Type"),
         payment_type_code: Yup.string().trim().required().label("Payment Method"),
@@ -372,9 +371,6 @@ const GenerateInvoiceForm = () => {
                                         placeholder="Enter recipient TIN number"
                                         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                                     />
-                                    {touched.customer_tin && errors.customer_tin && (
-                                        <MsgText text={errors.customer_tin} textColor="danger" />
-                                    )}
                                 </div>
                                 <div className="block">
                                     <label className="block mb-3 text-black dark:text-white">
