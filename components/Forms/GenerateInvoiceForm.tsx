@@ -36,7 +36,7 @@ const GenerateInvoiceForm = ({ transaction, transaction_type }: { transaction: a
     let initialValues: IInvoice = {
         original_invoice_number: 0,
         customer_tin: 7,
-        purchase_code: 0,
+        purchase_code: undefined,
         sender: '',
         recipient: '',
         recipient_phone_number: '',
