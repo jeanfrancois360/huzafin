@@ -36,7 +36,7 @@ const GenerateInvoiceForm = ({ transaction, transaction_type }: { transaction: a
     let initialValues: IInvoice = {
         original_invoice_number: 0,
         customer_tin: 7,
-        purchase_code: undefined,
+        purchase_code: 0,
         sender: '',
         recipient: '',
         recipient_phone_number: '',
@@ -489,6 +489,9 @@ const GenerateInvoiceForm = ({ transaction, transaction_type }: { transaction: a
                                         placeholder="Enter recipient TIN number"
                                         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                                     />
+                                    {touched.customer_tin && errors.customer_tin && (
+                                        <MsgText text={errors.customer_tin} textColor="danger" />
+                                    )}
                                 </div>
                                 <div className="block">
                                     <label className="block mb-3 text-black dark:text-white">
