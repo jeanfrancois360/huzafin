@@ -61,6 +61,10 @@ const GenerateInvoiceForm = ({ transaction, transaction_type }: { transaction: a
         modifier_id: '45678',
         modifier_name: 'TestModifier',
         report_number: new Date().valueOf(),
+        cancel_requested_date: "",
+        cancel_date: "",
+        refund_date: "",
+        refunded_reason_code: "",
 
         items: [{
             name: "", // visible
@@ -128,9 +132,9 @@ const GenerateInvoiceForm = ({ transaction, transaction_type }: { transaction: a
                 receipt_type_code: transaction_type == "R" ? transaction_type : transaction.receipt_type_code ? transaction.receipt_type_code : initialValues.receipt_type_code,
                 payment_type_code: transaction.payment_type_code || initialValues.payment_type_code,
                 invoice_status_code: transaction.invoice_status_code || initialValues.invoice_status_code,
-                validated_date: transaction.validated_date || initialValues.validated_date,
-                date: transaction.date || initialValues.date,
-                due_date: transaction.due_date || initialValues.due_date,
+                validated_date: transaction.validated_date.substring(0, 10) || initialValues.validated_date,
+                date: transaction.date.substring(0, 10) || initialValues.date,
+                due_date: transaction.due_date.substring(0, 10) || initialValues.due_date,
                 notes: transaction.notes || initialValues.notes,
                 terms: transaction.terms || initialValues.terms,
                 subtotal: transaction.subtotal || initialValues.subtotal,
@@ -145,6 +149,10 @@ const GenerateInvoiceForm = ({ transaction, transaction_type }: { transaction: a
                 modifier_id: transaction.modifier_id || initialValues.modifier_id,
                 modifier_name: transaction.modifier_name || initialValues.modifier_name,
                 report_number: transaction.report_number || initialValues.report_number,
+                cancel_requested_date: transaction.date.substring(0, 10) || initialValues.date,
+                cancel_date: transaction.cancel_date.substring(0, 10) || initialValues.cancel_date,
+                refund_date: transaction.refund_date.substring(0, 10) || initialValues.refund_date,
+                refunded_reason_code: transaction.refunded_reason_code || initialValues.refunded_reason_code,
                 items: transaction.items.map((item: any, index: number) => ({
                     name: item.name || initialValues.items[index]?.name || '',
                     item_classification_code: item.item_classification_code || initialValues.items[index]?.item_classification_code || '',
