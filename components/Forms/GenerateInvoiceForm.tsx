@@ -168,7 +168,7 @@ const GenerateInvoiceForm = ({ transaction, transaction_type }: { transaction: a
                     tax_amount: item.tax_amount || initialValues.items[index]?.tax_amount || 0,
                     discount_rate: item.discount_rate || initialValues.items[index]?.discount_rate || 0,
                     discount_amount: item.discount_amount || initialValues.items[index]?.discount_amount || 0,
-                    external_id: uuidv4(),
+                    external_id: new Date().valueOf(),
                 })),
             };
 
