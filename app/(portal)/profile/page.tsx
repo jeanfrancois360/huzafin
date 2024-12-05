@@ -135,11 +135,11 @@ const Profile = () => {
       new_password: payload.new_password,
     }
 
-    if (isProfileLoading) {
+    if (isPasswordLoading) {
       return
     }
 
-    setIsProfileLoading(true);
+    setIsPasswordLoading(true);
     setErrorMsg("")
     return await axios.patch(`/api/user/change-password/${getUserFromLocalStorage().id}`, data, {
       headers: {
@@ -147,7 +147,7 @@ const Profile = () => {
           'Bearer ' + JSON.parse(localStorage.getItem('access_token') || ''),
       },
     }).then((res) => {
-      setIsProfileLoading(false)
+      setIsPasswordLoading(false)
       console.log({ res })
 
       if (res.data.data.includes("Password updated Successfully")) {
@@ -158,7 +158,7 @@ const Profile = () => {
         console.log("Here")
       }
     }).catch((error) => {
-      setIsProfileLoading(false);
+      setIsPasswordLoading(false);
       console.error(error.response?.data?.message);
       const errorMessage = error.response?.data?.message;
       setErrorMsg(errorMessage || error.message);
@@ -169,6 +169,7 @@ const Profile = () => {
 
   return (
     <>
+      <ToastContainer />
       <div className="mx-auto max-w-270">
         <Breadcrumb pageName="Profile" />
 

@@ -142,9 +142,9 @@ const Settings = () => {
 
   return (
     <>
+      <ToastContainer />
       <div className="mx-auto max-w-270">
         <Breadcrumb pageName="Settings" />
-
         <div className="grid grid-cols-12 gap-8">
           <div className="col-span-12 xl:col-span-12">
             <div className="bg-white border rounded-sm border-stroke shadow-default dark:border-strokedark dark:bg-boxdark">
