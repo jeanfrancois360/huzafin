@@ -1,11 +1,17 @@
+'use client';
 import React from 'react';
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import GenerateInvoiceForm from '@/components/Forms/GenerateInvoiceForm';
+import { useSearchParams } from 'next/navigation';
 
 const Apps = () => {
+    const searchParams = useSearchParams();
+    const transaction = searchParams.get('transaction')
+        ? JSON.parse(searchParams.get('transaction') as string)
+        : null;
     return (
         <>
-            <Breadcrumb pageName="Generate Invoice" />
+            <Breadcrumb pageName="Copy Invoice" />
             <div className="grid grid-cols-1 gap-9 sm:grid-cols-1">
                 <div className="flex flex-col gap-9">
                     {/* <!-- Input Fields --> */}
@@ -15,7 +21,7 @@ const Apps = () => {
                                 Invoice details
                             </h3>
                         </div>
-                        <GenerateInvoiceForm transaction={undefined} transaction_type={undefined} />
+                        <GenerateInvoiceForm transaction={transaction} transaction_type={'C'} />
                     </div>
                 </div>
             </div>

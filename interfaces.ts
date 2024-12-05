@@ -9,6 +9,13 @@ export interface IRegister {
   password: string;
 }
 
+export interface ISettings {
+  tin: string;
+  mrc: string;
+  branch_id: string;
+  address: string;
+}
+
 export interface IItem {
   name: string;
   item_classification_code: string;
@@ -28,10 +35,10 @@ export interface IItem {
 }
 
 export interface IInvoice {
-  invoice_number: number;
-  original_invoice_number: number;
-  customer_tin: string;
-  purchase_code: number;
+  invoice_number?: number;
+  original_invoice_number?: number;
+  customer_tin: number;
+  purchase_code?: number;
   sender: string;
   recipient: string;
   recipient_phone_number?: string;
@@ -46,16 +53,20 @@ export interface IInvoice {
   terms: string;
   subtotal: number;
   total: number;
+  amount_paid: number;
+  balance_due: number;
   taxable_amount: number;
   tax: number;
   discount: number;
-  amount_paid: number;
-  balance_due: number;
   registrant_id: string;
   registrant_name: string;
   modifier_id: string;
   modifier_name: string;
   report_number: number;
+  cancel_requested_date?: string;
+  cancel_date?: string;
+  refund_date?: string;
+  refunded_reason_code?: string;
   items: IItem[];
 }
 

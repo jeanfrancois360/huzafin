@@ -1,7 +1,8 @@
 "use client"
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import InvoiceList from '@/components/Tables/InvoiceList';
-import axios from 'axios';
+import axios from '../../../axios';
+
 import { useEffect, useState } from 'react';
 
 

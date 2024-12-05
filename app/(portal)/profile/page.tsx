@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ApiUrl } from '@/constants';
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { MsgText } from '@/components/MsgText/MsgText';
+import { InfinitySpin } from 'react-loader-spinner';
 
 
 const Profile = () => {
@@ -23,10 +24,27 @@ const Profile = () => {
     email: "",
   }
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isProfileLoading, setIsProfileLoading] = useState(false);
+  const [isPasswordLoading, setIsPasswordLoading] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
-  const user = typeof window !== "undefined" && window.JSON.parse(localStorage.getItem("user") || "");
+  const [profileValue, setProfileValue] = useState<IProfile>(initialProfileValues)
+  const getUserFromLocalStorage = () => {
+    if (typeof window === "undefined") return null;
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  };
+
+  useEffect(() => {
+    const user = getUserFromLocalStorage();
+    if (user) {
+      setProfileValue((prevValue) => ({
+        ...prevValue,
+        name: user.name,
+        email: user.email,
+      }));
+    }
+  }, []);
 
 
   const notify = (msg_type: string) => {
@@ -86,23 +104,23 @@ const Profile = () => {
       email: payload.email,
     }
 
-    if (isLoading) {
+    if (isProfileLoading) {
       return
     }
 
-    setIsLoading(true);
+    setIsProfileLoading(true);
     setErrorMsg("")
-    return await axios.patch(`/api/user/update-profile/${user.id}`, data, {
+    return await axios.patch(`/api/user/update-profile/${getUserFromLocalStorage().id}`, data, {
       headers: {
         Authorization:
           'Bearer ' + JSON.parse(localStorage.getItem('access_token') || ''),
       },
     }).then((res) => {
-      setIsLoading(false)
+      setIsProfileLoading(false)
       console.log({ res })
 
     }).catch((error: { response: { data: { message: any; }; }; message: any; }) => {
-      setIsLoading(false);
+      setIsProfileLoading(false);
       console.error(error.response?.data?.message);
       const errorMessage = error.response?.data?.message;
       setErrorMsg(errorMessage || error.message);
@@ -117,19 +135,19 @@ const Profile = () => {
       new_password: payload.new_password,
     }
 
-    if (isLoading) {
+    if (isProfileLoading) {
       return
     }
 
-    setIsLoading(true);
+    setIsProfileLoading(true);
     setErrorMsg("")
-    return await axios.patch(`/api/user/change-password/${user.id}`, data, {
+    return await axios.patch(`/api/user/change-password/${getUserFromLocalStorage().id}`, data, {
       headers: {
         Authorization:
           'Bearer ' + JSON.parse(localStorage.getItem('access_token') || ''),
       },
     }).then((res) => {
-      setIsLoading(false)
+      setIsProfileLoading(false)
       console.log({ res })
 
       if (res.data.data.includes("Password updated Successfully")) {
@@ -140,7 +158,7 @@ const Profile = () => {
         console.log("Here")
       }
     }).catch((error) => {
-      setIsLoading(false);
+      setIsProfileLoading(false);
       console.error(error.response?.data?.message);
       const errorMessage = error.response?.data?.message;
       setErrorMsg(errorMessage || error.message);
@@ -165,7 +183,7 @@ const Profile = () => {
               <div className="p-7">
                 <Formik
                   enableReinitialize
-                  initialValues={initialProfileValues}
+                  initialValues={profileValue}
                   onSubmit={handleProfileUpdate}
                   validationSchema={ProfileFormValidationSchema}
                 >
@@ -179,8 +197,8 @@ const Profile = () => {
                     errors,
                   }) => (
                     <form className="" onSubmit={handleSubmit} method="post">
-                      <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                        <div className="w-full sm:w-1/2">
+                      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                        <div className="block">
                           <label
                             className="block mb-3 text-sm font-medium text-black dark:text-white"
                             htmlFor="fullName"
@@ -218,7 +236,7 @@ const Profile = () => {
                               type="text"
                               placeholder="Enter your name"
                               name="name"
-                              value={values.name = user.name || ""}
+                              value={values.name}
                               onChange={handleChange('name')}
                               onBlur={handleBlur('name')}
                               autoComplete={`${true}`}
@@ -229,7 +247,7 @@ const Profile = () => {
                           </div>
                         </div>
 
-                        <div className="w-full sm:w-1/2">
+                        <div className="block">
                           <label
                             className="block mb-3 text-sm font-medium text-black dark:text-white"
                             htmlFor="emailAddress"
@@ -267,7 +285,7 @@ const Profile = () => {
                               type="email"
                               id="emailAddress"
                               name="email"
-                              value={values.email = user.email || ""}
+                              value={values.email}
                               onChange={handleChange('email')}
                               onBlur={handleBlur('email')}
                               autoComplete={`${true}`}
@@ -279,16 +297,21 @@ const Profile = () => {
                         </div>
                       </div>
 
-                      <div className="flex justify-end gap-4.5">
 
-                        <button
-                          className="flex justify-center px-6 py-2 font-medium rounded bg-primary text-gray hover:bg-opacity-95"
-                          type="submit"
-                          disabled={isLoading ? true : false}
-                        >
-                          Save
-                        </button>
-                      </div>
+                      <button
+                        type="submit"
+                        disabled={isProfileLoading ? true : false}
+                        className="flex justify-center w-full mt-6 font-medium rounded bg-primary text-gray"
+                      >
+                        {!isProfileLoading ? (<div className='p-4'> Save</div>) : (
+                          <div className='ml-[-5%]'>
+                            <InfinitySpin
+                              width="110"
+                              color="#fff"
+                            />
+                          </div>
+                        )}
+                      </button>
                     </form>
                   )}</Formik>
               </div>
@@ -318,8 +341,8 @@ const Profile = () => {
                     errors,
                   }) => (
                     <form className="" onSubmit={handleSubmit} method="post">
-                      <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                        <div className="w-full sm:w-1/2">
+                      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                        <div className="block">
                           <label
                             className="block mb-3 text-sm font-medium text-black dark:text-white"
                             htmlFor="fullName"
@@ -342,8 +365,7 @@ const Profile = () => {
                             )}
                           </div>
                         </div>
-
-                        <div className="w-full sm:w-1/2">
+                        <div className="block">
                           <label
                             className="block mb-3 text-sm font-medium text-black dark:text-white"
                             htmlFor="fullName"
@@ -367,17 +389,21 @@ const Profile = () => {
                           </div>
                         </div>
                       </div>
+                      <button
+                        type="submit"
+                        disabled={isPasswordLoading ? true : false}
+                        className="flex justify-center w-full mt-6 font-medium rounded bg-primary text-gray"
+                      >
+                        {!isPasswordLoading ? (<div className='p-4'> Save</div>) : (
+                          <div className='ml-[-5%]'>
+                            <InfinitySpin
+                              width="110"
+                              color="#fff"
+                            />
+                          </div>
+                        )}
+                      </button>
 
-                      <div className="flex justify-end gap-4.5">
-
-                        <button
-                          className="flex justify-center px-6 py-2 font-medium rounded bg-primary text-gray hover:bg-opacity-95"
-                          type="submit"
-                          disabled={isLoading ? true : false}
-                        >
-                          Save
-                        </button>
-                      </div>
                     </form>
                   )}</Formik>
               </div>

@@ -1,0 +1,80 @@
+[
+    {
+        "code": "01",
+        "sort_order": "1",
+        "name": "Missing Quantity",
+        "description": "Missing Quantity"
+    },
+    {
+        "code": "02",
+        "sort_order": "2",
+        "name": "Missing Item",
+        "description": "Missing Item"
+    },
+    {
+        "code": "03",
+        "sort_order": "3",
+        "name": "Damaged",
+        "description": "Damaged"
+    },
+    {
+        "code": "04",
+        "sort_order": "4",
+        "name": "Wasted",
+        "description": "Wasted"
+    },
+    {
+        "code": "05",
+        "sort_order": "5",
+        "name": "Raw Material Shortage",
+        "description": "Raw Material Shortage"
+    },
+    {
+        "code": "06",
+        "sort_order": "6",
+        "name": "Refund",
+        "description": "Refund"
+    },
+    {
+        "code": "07",
+        "sort_order": "7",
+        "name": "Wrong Customer TIN",
+        "description": "Wrong Customer TIN"
+    },
+    {
+        "code": "08",
+        "sort_order": "8",
+        "name": "Wrong Customer name",
+        "description": "Wrong Customer name"
+    },
+    {
+        "code": "09",
+        "sort_order": "9",
+        "name": "Wrong Amount/price",
+        "description": "Wrong Amount/price"
+    },
+    {
+        "code": "10",
+        "sort_order": "10",
+        "name": "Wrong Quantity",
+        "description": "Wrong Quantity"
+    },
+    {
+        "code": "11",
+        "sort_order": "11",
+        "name": "Wrong Item(s)",
+        "description": "Wrong Item(s)"
+    },
+    {
+        "code": "12",
+        "sort_order": "12",
+        "name": "Wrong tax type",
+        "description": "Wrong tax type"
+    },
+    {
+        "code": "13",
+        "sort_order": "13",
+        "name": "Other reason",
+        "description": "Other reason"
+    }
+]

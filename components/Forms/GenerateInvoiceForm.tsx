@@ -19,6 +19,7 @@ import sales_types from '../../data/json/sales_types.json'
 import receipt_types from '../../data/json/receipt_types.json'
 import tax_types from '../../data/json/tax_types.json'
 import invoice_status from '../../data/json/invoice_status.json'
+import refund_reasons from '../../data/json/refund_reasons.json'
 import { v4 as uuidv4 } from 'uuid';
 
 function generateUniqueId() {
@@ -30,13 +31,12 @@ function generateUniqueId() {
     }
     return uniqueId;
 }
-const GenerateInvoiceForm = () => {
+const GenerateInvoiceForm = ({ transaction, transaction_type }: { transaction: any, transaction_type: any }) => {
 
     let initialValues: IInvoice = {
-        invoice_number: new Date().valueOf(),
-        original_invoice_number: new Date().valueOf(),
-        customer_tin: '',
-        purchase_code: new Date().valueOf(),
+        original_invoice_number: 0,
+        customer_tin: 7,
+        purchase_code: 0,
         sender: '',
         recipient: '',
         recipient_phone_number: '',
@@ -51,16 +51,17 @@ const GenerateInvoiceForm = () => {
         terms: '',
         subtotal: 0,
         total: 0,
+        amount_paid: 0,
+        balance_due: 0,
         taxable_amount: 0,
         tax: 0, //hidden
         discount: 0,
-        amount_paid: 0,
-        balance_due: 0,
         registrant_id: '11999',
         registrant_name: 'TestVSDC',
         modifier_id: '45678',
         modifier_name: 'TestModifier',
         report_number: new Date().valueOf(),
+
         items: [{
             name: "", // visible
             item_classification_code: "", // hidden
@@ -84,7 +85,7 @@ const GenerateInvoiceForm = () => {
     const [successMsg, setSuccessMsg] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
     const [selectedFile, setSelectedFile] = useState("");
-    const [invoiceNumber, setInvoiceNumber] = useState(new Date().valueOf())
+    const [formValue, setFormValue] = useState<IInvoice>(initialValues);
 
 
 
@@ -114,6 +115,61 @@ const GenerateInvoiceForm = () => {
             });
     }
 
+    useEffect(() => {
+        if (transaction) {
+            const updatedFormValues = {
+                original_invoice_number: transaction.id || initialValues.original_invoice_number,
+                customer_tin: transaction.customer_tin || initialValues.customer_tin,
+                purchase_code: transaction.purchase_code || initialValues.purchase_code,
+                sender: transaction.sender || initialValues.sender,
+                recipient: transaction.recipient || initialValues.recipient,
+                recipient_phone_number: transaction.recipient_phone_number || initialValues.recipient_phone_number,
+                sales_type_code: transaction_type == "C" ? transaction_type : transaction.sales_type_code ? transaction.sales_type_code : initialValues.sales_type_code,
+                receipt_type_code: transaction_type == "R" ? transaction_type : transaction.receipt_type_code ? transaction.receipt_type_code : initialValues.receipt_type_code,
+                payment_type_code: transaction.payment_type_code || initialValues.payment_type_code,
+                invoice_status_code: transaction.invoice_status_code || initialValues.invoice_status_code,
+                validated_date: transaction.validated_date || initialValues.validated_date,
+                date: transaction.date || initialValues.date,
+                due_date: transaction.due_date || initialValues.due_date,
+                notes: transaction.notes || initialValues.notes,
+                terms: transaction.terms || initialValues.terms,
+                subtotal: transaction.subtotal || initialValues.subtotal,
+                total: transaction.total || initialValues.total,
+                amount_paid: transaction.amount_paid || initialValues.amount_paid,
+                balance_due: transaction.balance_due || initialValues.balance_due,
+                taxable_amount: transaction.taxable_amount || initialValues.taxable_amount,
+                tax: transaction.tax || initialValues.tax,
+                discount: transaction.discount || initialValues.discount,
+                registrant_id: transaction.registrant_id || initialValues.registrant_id,
+                registrant_name: transaction.registrant_name || initialValues.registrant_name,
+                modifier_id: transaction.modifier_id || initialValues.modifier_id,
+                modifier_name: transaction.modifier_name || initialValues.modifier_name,
+                report_number: transaction.report_number || initialValues.report_number,
+                items: transaction.items.map((item: any, index: number) => ({
+                    name: item.name || initialValues.items[index]?.name || '',
+                    item_classification_code: item.item_classification_code || initialValues.items[index]?.item_classification_code || '',
+                    packaging_unit_code: item.packaging_unit_code || initialValues.items[index]?.packaging_unit_code || '',
+                    package: item.package || initialValues.items[index]?.package || '',
+                    quantity: item.quantity || initialValues.items[index]?.quantity || 10,
+                    uom: item.uom || initialValues.items[index]?.uom || '',
+                    rate: item.rate || initialValues.items[index]?.rate || 0,
+                    amount: item.amount || initialValues.items[index]?.amount || 0,
+                    tax_type: item.tax_type || initialValues.items[index]?.tax_type || '',
+                    taxable_amount: item.taxable_amount || initialValues.items[index]?.taxable_amount || 0,
+                    tax_rate: item.tax_rate || initialValues.items[index]?.tax_rate || 0,
+                    tax_amount: item.tax_amount || initialValues.items[index]?.tax_amount || 0,
+                    discount_rate: item.discount_rate || initialValues.items[index]?.discount_rate || 0,
+                    discount_amount: item.discount_amount || initialValues.items[index]?.discount_amount || 0,
+                    external_id: uuidv4(),
+                })),
+            };
+
+            setFormValue(updatedFormValues);
+            console.log({ transaction });
+            console.log({ updatedFormValues });
+        }
+    }, [transaction]);
+
 
     useEffect(() => {
         if (successMsg) {
@@ -128,7 +184,6 @@ const GenerateInvoiceForm = () => {
     }, [errorMsg])
 
     const FormValidationSchema = Yup.object().shape({
-        invoice_number: Yup.number().required().label("Invoice Number"),
         sender: Yup.string().trim().required().label("Sender"),
         recipient: Yup.string().trim().required().label("Recipient"),
         recipient_phone_number: Yup.string()
@@ -139,17 +194,15 @@ const GenerateInvoiceForm = () => {
         payment_type_code: Yup.string().trim().required().label("Payment Method"),
         invoice_status_code: Yup.string().trim().required().label("Invoice Status"),
         validated_date: Yup.string().trim().required().label("Validated Date"),
-        date: Yup.date().required('Date is required').nullable(),
+        date: Yup.date().required('Date is required'),
         due_date: Yup.date()
             .required('Due date is required')
-            .nullable()
             .when(
                 'date',
                 (date, schema) => date && schema.min(date, 'Due date must be greater than or equal to Date')
             ),
+        customer_tin: Yup.number().max(9).required().label('TIN Number'),
     })
-
-
 
     const handleFileChange = (e: any) => {
         setSelectedFile(e.target.files)
@@ -182,7 +235,12 @@ const GenerateInvoiceForm = () => {
                 console.log({ response })
                 setSuccessMsg(response.data.data.message)
                 let invoicePath = `${response.data.data.file_path}`
-                handleSendSMS(invoicePath, payload.recipient_phone_number)
+                if (payload.recipient_phone_number) {
+                    handleSendSMS(invoicePath, payload.recipient_phone_number)
+                }
+                else {
+                    setErrorMsg('SMS not sent due to missing recipient phone number')
+                }
                 window != undefined && window.open(invoicePath, "_blank");
             }).catch((error) => {
                 setIsLoading(false)
@@ -230,8 +288,8 @@ const GenerateInvoiceForm = () => {
         <>
             <ToastContainer />
             <Formik
-                // enableReinitialize
-                initialValues={initialValues}
+                enableReinitialize
+                initialValues={formValue}
                 onSubmit={handleInvoice}
                 validationSchema={FormValidationSchema}
             >
@@ -248,6 +306,26 @@ const GenerateInvoiceForm = () => {
                             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 <div className="block">
                                     <label className="block mb-3 text-black dark:text-white">
+                                        Receipt Type
+                                    </label>
+                                    <select
+                                        name="receipt_type_code"
+                                        value={values.receipt_type_code || ""}
+                                        onChange={handleChange('receipt_type_code')}
+                                        onBlur={handleBlur('receipt_type_code')}
+                                        autoComplete={`${true}`}
+                                        className="relative z-20 w-full px-5 py-3 transition bg-transparent border rounded outline-none appearance-none border-stroke focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input">
+                                        <option disabled value="">--Select receipt type--</option>
+                                        {receipt_types && receipt_types.map((item, index) => (
+                                            <option key={index} value={item.id}>{item.name}</option>
+                                        ))}
+                                    </select>
+                                    {touched.receipt_type_code && errors.receipt_type_code && (
+                                        <MsgText text={errors.receipt_type_code} textColor="danger" />
+                                    )}
+                                </div>
+                                <div className="block">
+                                    <label className="block mb-3 text-black dark:text-white">
                                         Logo
                                     </label>
                                     <input
@@ -261,25 +339,98 @@ const GenerateInvoiceForm = () => {
                                 </div>
                                 <div className="block">
                                     <label className="block mb-3 text-black dark:text-white">
-                                        Invoice Number
+                                        Original Invoice Number
                                     </label>
                                     <input
-                                        type="text"
-                                        name="invoice_number"
-                                        value={values.invoice_number = invoiceNumber || 0}
-                                        onChange={handleChange('invoice_number')}
-                                        onBlur={handleBlur('invoice_number')}
+                                        type="number"
+                                        name="original_invoice_number"
+                                        value={values.original_invoice_number || 0}
+                                        onChange={handleChange('original_invoice_number')}
+                                        onBlur={handleBlur('original_invoice_number')}
                                         autoComplete={`${true}`}
-                                        placeholder="Invoice Number"
+                                        disabled
                                         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                                     />
-                                    {touched.invoice_number && errors.invoice_number && (
-                                        <MsgText text={errors.invoice_number} textColor="danger" />
+                                    {touched.original_invoice_number && errors.original_invoice_number && (
+                                        <MsgText text={errors.original_invoice_number} textColor="danger" />
                                     )}
                                 </div>
-                            </div>
-                            <hr className='text-[#E2E8F0] dark:text-[#3C4D5F]' />
-                            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                                {transaction_type == "R" && (<><div className="block">
+                                    <label className="block mb-3 text-black dark:text-white">
+                                        Cancel Requested Date
+                                    </label>
+                                    <input
+                                        type="date"
+                                        name="cancel_requested_date"
+                                        value={values.cancel_requested_date || ""}
+                                        onChange={handleChange('cancel_requested_date')}
+                                        onBlur={handleBlur('cancel_requested_date')}
+                                        autoComplete={`${true}`}
+                                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                                    />
+                                    {touched.cancel_requested_date && errors.cancel_requested_date && (
+                                        <MsgText text={errors.cancel_requested_date} textColor="danger" />
+                                    )}
+                                </div>
+                                    <div className="block">
+                                        <label className="block mb-3 text-black dark:text-white">
+                                            Cancel Date
+                                        </label>
+                                        <input
+                                            type="date"
+                                            name="cancel_date"
+                                            value={values.cancel_date || ""}
+                                            onChange={handleChange('cancel_date')}
+                                            onBlur={handleBlur('cancel_date')}
+                                            autoComplete={`${true}`}
+                                            className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                                        />
+                                        {touched.cancel_date && errors.cancel_date && (
+                                            <MsgText text={errors.cancel_date} textColor="danger" />
+                                        )}
+                                    </div>
+                                    <div className="block">
+                                        <label className="block mb-3 text-black dark:text-white">
+                                            Refund Date
+                                        </label>
+                                        <input
+                                            type="date"
+                                            name="refund_date"
+                                            value={values.refund_date || ""}
+                                            onChange={handleChange('refund_date')}
+                                            onBlur={handleBlur('refund_date')}
+                                            autoComplete={`${true}`}
+                                            className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                                        />
+                                        {touched.refund_date && errors.refund_date && (
+                                            <MsgText text={errors.refund_date} textColor="danger" />
+                                        )}
+                                    </div>
+
+                                    <div className="block">
+                                        <label className="block mb-3 text-black dark:text-white">
+                                            Refund Reason
+                                        </label>
+                                        <select
+                                            name="refunded_reason_code"
+                                            value={values.refunded_reason_code || ""}
+                                            onChange={handleChange('refunded_reason_code')}
+                                            onBlur={handleBlur('refunded_reason_code')}
+                                            autoComplete={`${true}`}
+                                            className="relative z-20 w-full px-5 py-3 transition bg-transparent border rounded outline-none appearance-none border-stroke focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input">
+                                            <option disabled value="">--Select refund reason--</option>
+                                            {refund_reasons && refund_reasons.map((item, index) => (
+                                                <option key={index} value={item.code}>{item.name}</option>
+                                            ))}
+                                        </select>
+                                        {touched.refunded_reason_code && errors.refunded_reason_code && (
+                                            <MsgText text={errors.refunded_reason_code} textColor="danger" />
+                                        )}
+
+                                    </div>
+                                </>
+                                )}
+
                                 <div className="block">
                                     <label className="block mb-3 text-black dark:text-white">
                                         Sender
@@ -300,26 +451,6 @@ const GenerateInvoiceForm = () => {
                                 </div>
                                 <div className="block">
                                     <label className="block mb-3 text-black dark:text-white">
-                                        Date
-                                    </label>
-                                    <input
-                                        type="date"
-                                        name="date"
-                                        value={values.date || ""}
-                                        onChange={handleChange('date')}
-                                        onBlur={handleBlur('date')}
-                                        autoComplete={`${true}`}
-                                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                                    />
-                                    {touched.date && errors.date && (
-                                        <MsgText text={errors.date} textColor="danger" />
-                                    )}
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                                <div className="block">
-                                    <label className="block mb-3 text-black dark:text-white">
                                         Recipient
                                     </label>
                                     <input
@@ -336,31 +467,11 @@ const GenerateInvoiceForm = () => {
                                         <MsgText text={errors.recipient} textColor="danger" />
                                     )}
                                 </div>
-
-                                <div className="block">
-                                    <label className="block mb-3 text-black dark:text-white">
-                                        Due Date
-                                    </label>
-                                    <input
-                                        type="date"
-                                        name="due_date"
-                                        value={values.due_date || ""}
-                                        onChange={handleChange('due_date')}
-                                        onBlur={handleBlur('due_date')}
-                                        autoComplete={`${true}`}
-                                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                                    />
-                                    {touched.due_date && errors.due_date && (
-                                        <MsgText text={errors.due_date} textColor="danger" />
-                                    )}
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 <div className="block">
                                     <label className="block mb-3 text-black dark:text-white">
                                         Recipient TIN
                                     </label>
+
                                     <input
                                         type="text"
                                         name="customer_tin"
@@ -372,25 +483,6 @@ const GenerateInvoiceForm = () => {
                                         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                                     />
                                 </div>
-                                <div className="block">
-                                    <label className="block mb-3 text-black dark:text-white">
-                                        Validated Date
-                                    </label>
-                                    <input
-                                        type="date"
-                                        name="validated_date"
-                                        value={values.validated_date || ""}
-                                        onChange={handleChange('validated_date')}
-                                        onBlur={handleBlur('validated_date')}
-                                        autoComplete={`${true}`}
-                                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                                    />
-                                    {touched.validated_date && errors.validated_date && (
-                                        <MsgText text={errors.validated_date} textColor="danger" />
-                                    )}
-                                </div>
-                            </div>
-                            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 <div className="block">
                                     <label className="block mb-3 text-black dark:text-white">
                                         Recipient Phone Number
@@ -414,32 +506,78 @@ const GenerateInvoiceForm = () => {
                                     {touched.recipient_phone_number && errors.recipient_phone_number && (
                                         <MsgText text={errors.recipient_phone_number} textColor="danger" />
                                     )}
-
                                 </div>
+                                {values.customer_tin && (<div className="block">
+                                    <label className="block mb-3 text-black dark:text-white">
+                                        Purchase Code
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="purchase_code"
+                                        value={values.purchase_code || ""}
+                                        onChange={handleChange('purchase_code')}
+                                        onBlur={handleBlur('purchase_code')}
+                                        autoComplete={`${true}`}
+                                        placeholder="Enter purchase code"
+                                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                                    />
+                                </div>)}
+
                                 <div className="block">
                                     <label className="block mb-3 text-black dark:text-white">
-                                        Receipt Type
+                                        Date
                                     </label>
-                                    <select
-                                        name="receipt_type_code"
-                                        value={values.receipt_type_code || ""}
-                                        onChange={handleChange('receipt_type_code')}
-                                        onBlur={handleBlur('receipt_type_code')}
+                                    <input
+                                        type="date"
+                                        name="date"
+                                        value={values.date || ""}
+                                        onChange={handleChange('date')}
+                                        onBlur={handleBlur('date')}
                                         autoComplete={`${true}`}
-                                        className="relative z-20 w-full px-5 py-3 transition bg-transparent border rounded outline-none appearance-none border-stroke focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input">
-                                        <option disabled value="">--Select receipt type--</option>
-                                        {receipt_types && receipt_types.map((item, index) => (
-                                            <option key={index} value={item.id}>{item.name}</option>
-                                        ))}
-                                    </select>
-                                    {touched.receipt_type_code && errors.receipt_type_code && (
-                                        <MsgText text={errors.receipt_type_code} textColor="danger" />
+                                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                                    />
+                                    {touched.date && errors.date && (
+                                        <MsgText text={errors.date} textColor="danger" />
                                     )}
                                 </div>
-                            </div>
 
 
-                            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                                <div className="block">
+                                    <label className="block mb-3 text-black dark:text-white">
+                                        Due Date
+                                    </label>
+                                    <input
+                                        type="date"
+                                        name="due_date"
+                                        value={values.due_date || ""}
+                                        onChange={handleChange('due_date')}
+                                        onBlur={handleBlur('due_date')}
+                                        autoComplete={`${true}`}
+                                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                                    />
+                                    {touched.due_date && errors.due_date && (
+                                        <MsgText text={errors.due_date} textColor="danger" />
+                                    )}
+                                </div>
+
+                                <div className="block">
+                                    <label className="block mb-3 text-black dark:text-white">
+                                        Validated Date
+                                    </label>
+                                    <input
+                                        type="date"
+                                        name="validated_date"
+                                        value={values.validated_date || ""}
+                                        onChange={handleChange('validated_date')}
+                                        onBlur={handleBlur('validated_date')}
+                                        autoComplete={`${true}`}
+                                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                                    />
+                                    {touched.validated_date && errors.validated_date && (
+                                        <MsgText text={errors.validated_date} textColor="danger" />
+                                    )}
+                                </div>
+
                                 <div className="block">
                                     <label className="block mb-3 text-black dark:text-white">
                                         Sales Type
@@ -466,7 +604,6 @@ const GenerateInvoiceForm = () => {
                                     </label>
                                     <select
                                         name="invoice_status_code"
-                                        disabled
                                         value={values.invoice_status_code || ""}
                                         onChange={handleChange('invoice_status_code')}
                                         onBlur={handleBlur('invoice_status_code')}
@@ -482,9 +619,7 @@ const GenerateInvoiceForm = () => {
                                     )}
                                 </div>
 
-                            </div>
 
-                            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 <div className="block">
                                     <label className="block mb-3 text-black dark:text-white">
                                         Payment Method
@@ -505,7 +640,6 @@ const GenerateInvoiceForm = () => {
                                         <MsgText text={errors.payment_type_code} textColor="danger" />
                                     )}
                                 </div>
-
                             </div>
 
                             <hr className='text-[#E2E8F0] dark:text-[#3C4D5F]' />
@@ -965,13 +1099,14 @@ const GenerateInvoiceForm = () => {
                                             className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                                         />
                                     </div>
-                                    <div className="my-2">
+                                    <div className="hidden my-2">
                                         <label className="block mb-3 text-black dark:text-white">
                                             Amount Paid / RWF
                                         </label>
                                         <input
                                             type="number"
                                             min={0}
+                                            hidden
                                             name='amount_paid'
                                             value={values.amount_paid}
                                             onChange={handleChange('amount_paid')}
@@ -980,13 +1115,14 @@ const GenerateInvoiceForm = () => {
                                             className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                                         />
                                     </div>
-                                    {values.amount_paid > 0 && (<div className="my-2">
+                                    {values.amount_paid > 0 && (<div className="hidden my-2">
                                         <label className="block mb-3 text-black dark:text-white">
                                             Balance Due
                                         </label>
                                         <input
                                             type="number"
                                             min={0}
+                                            hidden
                                             name='balance_due'
                                             value={values.balance_due = values.total - values.amount_paid}
                                             onChange={handleChange('balance_due')}
@@ -1013,7 +1149,7 @@ const GenerateInvoiceForm = () => {
                                 )}
                             </button>
                         </div>
-                    </form>)}</Formik>
+                    </form>)}</Formik >
         </>
     )
 }

@@ -224,7 +224,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
               {/* <!-- Menu Item Profile --> */}
               {/* <!-- Menu Item Settings --> */}
-              {/* <li>
+              <li>
                 <Link
                   href="/settings"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[#3444be] dark:hover:bg-[#3C4FE0] ${pathname.includes("settings") && "bg-[#3444be] dark:bg-[#3C4FE0]"
@@ -257,7 +257,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   </svg>
                   Settings
                 </Link>
-              </li> */}
+              </li>
               {/* <!-- Menu Item Settings --> */}
 
             </ul>
