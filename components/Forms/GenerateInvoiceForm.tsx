@@ -175,6 +175,18 @@ const GenerateInvoiceForm = ({ transaction, transaction_type }: { transaction: a
             setFormValue(updatedFormValues);
             console.log({ transaction });
             console.log({ updatedFormValues });
+
+            // Validate and log all errors
+            FormValidationSchema.validate(updatedFormValues, { abortEarly: false })
+                .then(() => {
+                    console.log("Validation passed!");
+                })
+                .catch(err => {
+                    console.log("Validation errors:");
+                    err.inner.forEach((error: { path: any; message: any; }) => {
+                        console.log(`${error.path}: ${error.message}`);
+                    });
+                });
         }
     }, [transaction]);
 
@@ -209,7 +221,7 @@ const GenerateInvoiceForm = ({ transaction, transaction_type }: { transaction: a
                 'date',
                 (date, schema) => date && schema.min(date, 'Due date must be greater than or equal to Date')
             ),
-        customer_tin: Yup.number().max(9).required().label('TIN Number'),
+        customer_tin: Yup.number().required().label('TIN Number'),
     })
 
     const handleFileChange = (e: any) => {
@@ -376,9 +388,6 @@ const GenerateInvoiceForm = ({ transaction, transaction_type }: { transaction: a
                                         autoComplete={`${true}`}
                                         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                                     />
-                                    {touched.cancel_requested_date && errors.cancel_requested_date && (
-                                        <MsgText text={errors.cancel_requested_date} textColor="danger" />
-                                    )}
                                 </div>
                                     <div className="block">
                                         <label className="block mb-3 text-black dark:text-white">
@@ -393,9 +402,6 @@ const GenerateInvoiceForm = ({ transaction, transaction_type }: { transaction: a
                                             autoComplete={`${true}`}
                                             className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                                         />
-                                        {touched.cancel_date && errors.cancel_date && (
-                                            <MsgText text={errors.cancel_date} textColor="danger" />
-                                        )}
                                     </div>
                                     <div className="block">
                                         <label className="block mb-3 text-black dark:text-white">
@@ -410,9 +416,6 @@ const GenerateInvoiceForm = ({ transaction, transaction_type }: { transaction: a
                                             autoComplete={`${true}`}
                                             className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                                         />
-                                        {touched.refund_date && errors.refund_date && (
-                                            <MsgText text={errors.refund_date} textColor="danger" />
-                                        )}
                                     </div>
 
                                     <div className="block">
@@ -431,10 +434,6 @@ const GenerateInvoiceForm = ({ transaction, transaction_type }: { transaction: a
                                                 <option key={index} value={item.code}>{item.name}</option>
                                             ))}
                                         </select>
-                                        {touched.refunded_reason_code && errors.refunded_reason_code && (
-                                            <MsgText text={errors.refunded_reason_code} textColor="danger" />
-                                        )}
-
                                     </div>
                                 </>
                                 )}
