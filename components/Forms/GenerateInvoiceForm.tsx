@@ -660,7 +660,7 @@ const GenerateInvoiceForm = ({ transaction, transaction_type }: { transaction: a
                                 {({ insert, remove, push }) => (
                                     <React.Fragment>
                                         {values.items.map((item, index) => (
-                                            <div className="p-6 rounded-md bg-whiter border-[#e2e8f0]" key={index}>
+                                            <div className="p-6 rounded-md bg-whiter border-[#e2e8f0] dark:bg-black" key={index}>
                                                 <div className="grid grid-cols-4 gap-3 ">
                                                     <div className="block">
                                                         <label className="block mb-1 text-black dark:text-white">
