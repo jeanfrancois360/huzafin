@@ -92,7 +92,7 @@ const InvoiceList = ({ transactions }: any) => {
             month: 'long',
             day: 'numeric',
         });
-        return `${sender} Invoice for ${recipient} - ${formattedDate}`;
+        return `Invoice from ${sender} to ${recipient} - ${formattedDate}`;
     }
     return (
         <>
