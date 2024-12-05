@@ -716,7 +716,7 @@ const GenerateInvoiceForm = ({ transaction, transaction_type }: { transaction: a
                                                             min={0}
                                                             id={`items.${index}.rate`}
                                                             name={`items.${index}.rate`}
-                                                            value={values.items[index].rate = (items.filter((item) => item.name == values.items[index]?.name)[0]?.rate) || 0}
+                                                            value={values.items[index].rate = (transaction_type == "R" ? ((items.filter((item) => item.name == values.items[index]?.name)[0]?.rate) * -1) : (items.filter((item) => item.name == values.items[index]?.name)[0]?.rate)) || 0}
                                                             onChange={handleChange(
                                                                 `items.${index}.rate`
                                                             )}
