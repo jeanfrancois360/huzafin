@@ -145,9 +145,9 @@ const InvoiceList = ({ transactions }: any) => {
                                                 <MdContentCopy />
                                             </button>
 
-                                            <button className="hover:text-primary" onClick={() => handleDownload(transaction.file_path)}>
+                                            {/* <button className="hover:text-primary" onClick={() => handleDownload(transaction.file_path)}>
                                                 <LuEye />
-                                            </button>
+                                            </button> */}
                                             <button className="hover:text-primary" onClick={() => handleDelete(transaction.id)}>
                                                 <FiTrash2 />
                                             </button>
