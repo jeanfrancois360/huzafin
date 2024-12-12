@@ -65,7 +65,7 @@ const GenerateInvoiceForm = ({ transaction, transaction_type }: { transaction: a
         cancel_date: "",
         refund_date: "",
         refunded_reason_code: "",
-
+        print_size: "POS",
         items: [{
             name: "", // visible
             item_classification_code: "", // hidden
@@ -153,6 +153,7 @@ const GenerateInvoiceForm = ({ transaction, transaction_type }: { transaction: a
                 cancel_date: transaction?.cancel_date?.substring(0, 10) || initialValues.cancel_date,
                 refund_date: transaction?.refund_date?.substring(0, 10) || initialValues.refund_date,
                 refunded_reason_code: transaction.refunded_reason_code || initialValues.refunded_reason_code,
+                print_size: transaction.print_size || initialValues.print_size,
                 items: transaction.items.map((item: any, index: number) => ({
                     name: item.name || initialValues.items[index]?.name || '',
                     item_classification_code: item.item_classification_code || initialValues.items[index]?.item_classification_code || '',
@@ -1014,6 +1015,25 @@ const GenerateInvoiceForm = ({ transaction, transaction_type }: { transaction: a
                                             placeholder="Terms and conditions - late fees, payment methods, delivery schedule"
                                             className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                                         ></textarea>
+                                    </div>
+                                    <div className="my-2">
+                                        <label className="block mb-3 text-black dark:text-white">
+                                            Print Size
+                                        </label>
+                                        <select
+                                            name="print_size"
+                                            value={values.print_size || ""}
+                                            onChange={handleChange('print_size')}
+                                            onBlur={handleBlur('print_size')}
+                                            autoComplete={`${true}`}
+                                            className="relative z-20 w-full px-5 py-3 transition bg-transparent border rounded outline-none appearance-none border-stroke focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input">
+                                            <option disabled value="">--Select print size--</option>
+                                            <option value="POS">POS</option>
+                                            <option value="A4">A4</option>
+                                        </select>
+                                        {touched.print_size && errors.print_size && (
+                                            <MsgText text={errors.print_size} textColor="danger" />
+                                        )}
                                     </div>
                                 </div>
                                 <div className='block'>

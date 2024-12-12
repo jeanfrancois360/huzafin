@@ -68,6 +68,7 @@ export interface IInvoice {
   refund_date?: string;
   refunded_reason_code?: string;
   items: IItem[];
+  print_size?: string;
 }
 
 export interface IProfile {
