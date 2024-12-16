@@ -8,6 +8,7 @@ import { IRegister } from '@/interfaces'
 import axios from '../../axios'
 import { redirect } from 'next/navigation'
 import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 import * as Yup from 'yup';
 import { InfinitySpin } from 'react-loader-spinner'
 
@@ -73,27 +74,51 @@ const SignUpForm = () => {
             name: payload.name,
             email: payload.email,
             password: payload.password,
-        }
+        };
 
-        if (isLoading) {
-            return
-        }
+        if (isLoading) return;
 
         setIsLoading(true);
-        setErrorMsg("")
+        setErrorMsg("");
+        setSuccessMsg("");
 
-        return await axios.post('/api/register', data).then((res) => {
-            setIsLoading(false)
-            if (res.data.status == true) {
+        try {
+            const res = await axios.post('/api/register', data);
+
+            setIsLoading(false);
+
+            if (res.data.status === true) {
                 setSuccessMsg("Successfully registered!");
+            } else {
+                // Handle unsuccessful response
+                setErrorMsg(res.data.message || "Something went wrong.");
             }
-        }).catch((error) => {
-            setIsLoading(false)
-            console.error(error.data.message);
-            const errorMessage = error.data.message;
-            setErrorMsg(errorMessage || error.message);
-        })
-    }
+        } catch (error: any) {
+            setIsLoading(false);
+
+            console.error("ERROR:", error);
+
+            if (error.response) {
+                // Server response errors
+                const responseData = error.response.data;
+                if (responseData.errors) {
+                    const errorMessages = Object.values(responseData.errors)
+                        .flat()
+                        .join(", ");
+                    setErrorMsg(errorMessages || responseData.message || "Invalid inputs.");
+                } else {
+                    setErrorMsg(responseData.message || "An error occurred.");
+                }
+            } else if (error.request) {
+                // Network errors
+                setErrorMsg("Network error: Unable to reach the server.");
+            } else {
+                // Other unexpected errors
+                setErrorMsg(error.message || "An unexpected error occurred.");
+            }
+        }
+    };
+
     return (
         <>
             <ToastContainer />

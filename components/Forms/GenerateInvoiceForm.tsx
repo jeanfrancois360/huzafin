@@ -177,7 +177,6 @@ const GenerateInvoiceForm = ({ transaction, transaction_type }: { transaction: a
             console.log({ transaction });
             console.log({ updatedFormValues });
 
-            // Validate and log all errors
             FormValidationSchema.validate(updatedFormValues, { abortEarly: false })
                 .then(() => {
                     console.log("Validation passed!");
@@ -229,10 +228,14 @@ const GenerateInvoiceForm = ({ transaction, transaction_type }: { transaction: a
         setSelectedFile(e.target.files)
     }
 
-    const handleInvoice = (payload: any) => {
+    const handleInvoice = async (payload: any) => {
         try {
-            setIsLoading(true)
+            setIsLoading(true);
+            setErrorMsg("");
+            setSuccessMsg("");
+
             const formData: FormData = new FormData();
+
             for (const key in payload) {
                 if (key === "items") {
                     payload[key].forEach((item: any, index: number) => {
@@ -244,35 +247,62 @@ const GenerateInvoiceForm = ({ transaction, transaction_type }: { transaction: a
                     formData.append(key, payload[key]);
                 }
             }
-            formData.append("logo", selectedFile[0]);
 
-            axios.post('/api/invoices', formData, {
+            if (selectedFile?.[0]) {
+                formData.append("logo", selectedFile[0]);
+            } else {
+                throw new Error("Logo file is required.");
+            }
+
+            const response = await axios.post('/api/invoices', formData, {
                 headers: {
-                    Authorization:
-                        'Bearer ' + JSON.parse(localStorage.getItem('access_token') || ''),
+                    Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('access_token') || ''),
                 },
-            }).then((response) => {
-                setIsLoading(false)
-                console.log({ response })
-                setSuccessMsg(response.data.data.message)
-                let invoicePath = `${response.data.data.file_path}`
-                if (payload.recipient_phone_number) {
-                    handleSendSMS(invoicePath, payload.recipient_phone_number)
+            });
+
+            setIsLoading(false);
+
+            console.log({ response });
+
+            // Set success message and handle the PDF file
+            setSuccessMsg(response.data.data.message);
+            const invoicePath = response.data.data.file_path;
+
+            if (payload.recipient_phone_number) {
+                handleSendSMS(invoicePath, payload.recipient_phone_number);
+            } else {
+                setErrorMsg('SMS not sent due to missing recipient phone number');
+            }
+
+            if (window !== undefined) {
+                window.open(invoicePath, "_blank");
+            }
+        } catch (error: any) {
+            setIsLoading(false);
+
+            console.error("Error generating invoice:", error);
+
+            if (error.response) {
+                // Handle server response errors
+                const responseData = error.response.data;
+                setErrorMsg(responseData.message || "Failed to generate the invoice.");
+
+                if (responseData.errors) {
+                    const errorMessages = Object.values(responseData.errors)
+                        .flat()
+                        .join(", ");
+                    setErrorMsg(errorMessages || "Invalid inputs provided.");
                 }
-                else {
-                    setErrorMsg('SMS not sent due to missing recipient phone number')
-                }
-                window != undefined && window.open(invoicePath, "_blank");
-            }).catch((error) => {
-                setIsLoading(false)
-                setErrorMsg(error.response.data.message)
-                console.error('Error generating PDF:', error);
-            })
-        } catch (error) {
-            setIsLoading(false)
-            console.error("Something went wrong", error);
+            } else if (error.request) {
+                // Handle network errors
+                setErrorMsg("Network error: Unable to reach the server.");
+            } else {
+                // Handle unexpected errors
+                setErrorMsg(error.message || "An unexpected error occurred.");
+            }
         }
-    }
+    };
+
     const generateUniqueID = () => {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (char) {
             const random = Math.random() * 16 | 0;
@@ -281,30 +311,65 @@ const GenerateInvoiceForm = ({ transaction, transaction_type }: { transaction: a
         });
     }
 
-    const handleSendSMS = (path: string, phone: string) => {
-        let payload = {
-            "msisdn": phone,
-            "message": "Click the link below to view your invoice: " + path,
-            "msgRef": generateUniqueID(),
-            "sender_id": "FDI"
-        }
-        axios.post('/api/sms/send-sms', payload, {
-            headers: {
-                Authorization:
-                    'Bearer ' + JSON.parse(localStorage.getItem('access_token') || ''),
-            },
-        }).then((response) => {
-            setIsLoading(false)
-            console.log({ response })
-            setSuccessMsg(response.data.data.message)
-            window != undefined && window.open(`${ApiUrl}${response.data.data.file_path}`, "_blank");
+    const handleSendSMS = async (path: string, phone: string) => {
+        try {
+            setIsLoading(true);
+            setErrorMsg("");
+            setSuccessMsg("");
 
-        }).catch((error) => {
-            setIsLoading(false)
-            setErrorMsg(error.response.data.message)
-            console.error('Error generating PDF:', error);
-        })
-    }
+            const payload = {
+                msisdn: phone,
+                message: `Click the link below to view your invoice: ${path}`,
+                msgRef: generateUniqueID(),
+                sender_id: "FDI",
+            };
+
+            const response = await axios.post('/api/sms/send-sms', payload, {
+                headers: {
+                    Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('access_token') || ''),
+                },
+            });
+
+            setIsLoading(false);
+
+            console.log({ response });
+            setSuccessMsg(response.data.data.message);
+
+            if (response.data.data.file_path) {
+                const fileUrl = `${ApiUrl}${response.data.data.file_path}`;
+                if (window !== undefined) {
+                    window.open(fileUrl, "_blank");
+                }
+            } else {
+                setErrorMsg("File path is missing in the response.");
+            }
+        } catch (error: any) {
+            setIsLoading(false);
+
+            console.error("Error sending SMS:", error);
+
+            if (error.response) {
+                // Handle server errors
+                const responseData = error.response.data;
+
+                if (responseData.errors) {
+                    const errorMessages = Object.values(responseData.errors)
+                        .flat()
+                        .join(", ");
+                    setErrorMsg(errorMessages || responseData.message || "Failed to send SMS.");
+                } else {
+                    setErrorMsg(responseData.message || "An error occurred while sending SMS.");
+                }
+            } else if (error.request) {
+                // Handle network errors
+                setErrorMsg("Network error: Unable to reach the server.");
+            } else {
+                // Handle unexpected errors
+                setErrorMsg(error.message || "An unexpected error occurred.");
+            }
+        }
+    };
+
     return (
         <>
             <ToastContainer />

@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from '../../axios';
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { HiOutlineReceiptRefund } from "react-icons/hi";
 import { MdContentCopy } from "react-icons/md";
 import { LuEye } from "react-icons/lu";

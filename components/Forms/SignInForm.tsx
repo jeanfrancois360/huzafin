@@ -8,6 +8,7 @@ import { ILogin } from '@/interfaces'
 import axios from '../../axios'
 import { redirect, useRouter } from 'next/navigation'
 import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 import * as Yup from 'yup';
 import { Audio, InfinitySpin } from 'react-loader-spinner'
 
@@ -71,29 +72,52 @@ const SignInForm = () => {
         const data = {
             email: payload.email,
             password: payload.password,
-        }
+        };
 
-        if (isLoading) {
-            return
-        }
+        if (isLoading) return;
 
         setIsLoading(true);
-        setErrorMsg("")
-        return await axios.post('/api/login', data).then((res) => {
-            setIsLoading(false)
-            if (res.data.status == true) {
-                localStorage.setItem('access_token', JSON.stringify(res.data.data.token))
-                localStorage.setItem('user', JSON.stringify(res.data.data.user))
-                router.push('/invoice/generate-invoice')
-            }
-        }).catch((error) => {
-            setIsLoading(false);
-            console.error(error.response?.data?.message);
-            const errorMessage = error.response?.data?.message;
-            setErrorMsg(errorMessage || error.message);
-        })
+        setErrorMsg("");
 
-    }
+        try {
+            const res = await axios.post('/api/login', data);
+
+            setIsLoading(false);
+
+            if (res.data.status === true) {
+                localStorage.setItem('access_token', JSON.stringify(res.data.data.token));
+                localStorage.setItem('user', JSON.stringify(res.data.data.user));
+                router.push('/invoice/generate-invoice');
+            } else {
+                setErrorMsg(res.data.message || "Login failed. Please try again.");
+            }
+        } catch (error: any) {
+            setIsLoading(false);
+
+            console.error("ERROR:", error);
+
+            if (error.response) {
+                // Server response errors
+                const responseData = error.response.data;
+
+                if (responseData.errors) {
+                    const errorMessages = Object.values(responseData.errors)
+                        .flat()
+                        .join(", ");
+                    setErrorMsg(errorMessages || responseData.message || "Invalid credentials.");
+                } else {
+                    setErrorMsg(responseData.message || "An error occurred while logging in.");
+                }
+            } else if (error.request) {
+                // Network errors
+                setErrorMsg("Network error: Unable to reach the server.");
+            } else {
+                // Other unexpected errors
+                setErrorMsg(error.message || "An unexpected error occurred.");
+            }
+        }
+    };
+
     return (
         <>
             <ToastContainer />
